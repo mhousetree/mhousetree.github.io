@@ -18,7 +18,7 @@ const RootElement = ({ children }: RootElementProps) => {
         `,
         }}
       />
-      <div>{children}</div>
+      {children}
     </>
   )
 }
