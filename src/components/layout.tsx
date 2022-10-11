@@ -13,6 +13,19 @@ const ResponsiveWrapper = styled.div`
   align-items: center;
   background-color: ${ColorCode.MAIN_BG_COLOR};
 
+  &[data-location-path='/about'] {
+    animation: about-bg 1s linear 1s 1 normal both;
+  }
+
+  @keyframes about-bg {
+    from {
+      background-color: ${ColorCode.SUB_BG_COLOR};
+    }
+    to {
+      background-color: ${ColorCode.SUB_BG_DARK_COLOR};
+    }
+  }
+
   main {
     grid-column: 2;
   }
@@ -91,7 +104,7 @@ export const Layout = ({ children }: LayoutProps) => {
   )
 
   return (
-    <ResponsiveWrapper>
+    <ResponsiveWrapper data-location-path={location.pathname}>
       {topPageLink}
       {children}
     </ResponsiveWrapper>
