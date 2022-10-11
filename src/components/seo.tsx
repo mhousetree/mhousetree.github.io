@@ -1,5 +1,5 @@
-import * as React from "react";
-import { useSiteMetadata } from "../hooks/use-site-metadata";
+import * as React from 'react'
+import { useSiteMetadata } from '../hooks/use-site-metadata'
 
 export const Seo = ({
   title,
@@ -13,7 +13,7 @@ export const Seo = ({
     image,
     siteUrl,
     twitterUsername,
-  } = useSiteMetadata();
+  } = useSiteMetadata()
 
   const seo = {
     title: title || defaultTitle,
@@ -21,7 +21,7 @@ export const Seo = ({
     image: `${siteUrl}${image}`,
     url: `${siteUrl}${pathname || ``}`,
     twitterUsername,
-  };
+  }
 
   return (
     <>
@@ -40,12 +40,12 @@ export const Seo = ({
       />
       {children}
     </>
-  );
-};
+  )
+}
 
 type SeoProps = {
-  title?: string;
-  description?: string;
-  pathname?: string;
-  children?: JSX.Element;
-};
+  title?: string
+  description?: string
+  pathname?: string
+  children?: JSX.Element
+}

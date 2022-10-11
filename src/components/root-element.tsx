@@ -1,5 +1,5 @@
-import React from "react";
-import { Script } from "gatsby";
+import React from 'react'
+import { Script } from 'gatsby'
 
 const RootElement = ({ children }: RootElementProps) => {
   return (
@@ -20,9 +20,9 @@ const RootElement = ({ children }: RootElementProps) => {
       />
       <div>{children}</div>
     </>
-  );
-};
+  )
+}
 
-type RootElementProps = { children: JSX.Element };
+type RootElementProps = { children: JSX.Element }
 
-export default RootElement;
+export default RootElement
