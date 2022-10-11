@@ -5,9 +5,9 @@ import { ColorCode } from '../constants/colors'
 
 const ResponsiveWrapper = styled.div`
   min-height: 100vh;
-  margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr min(960px, 80%) 1fr;
+  align-items: center;
   background-color: ${ColorCode.MAIN_BG_COLOR};
 
   main {
