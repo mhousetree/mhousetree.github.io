@@ -1,5 +1,7 @@
 export const ColorCode = {
   MAIN_BG_COLOR: '#FFFCF9',
+  SUB_BG_COLOR: '#FFF5EB',
+  SUB_BG_DARK_COLOR: '#CCC4BC',
   MAIN_TEXT_COLOR: '#443638',
   LIGHT_TEXT_COLOR: '#665255',
 }
