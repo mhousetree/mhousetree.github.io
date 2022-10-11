@@ -1,4 +1,4 @@
-import type { GatsbyConfig } from 'gatsby';
+import type { GatsbyConfig } from 'gatsby'
 
 const config: GatsbyConfig = {
   siteMetadata: {
@@ -17,7 +17,7 @@ const config: GatsbyConfig = {
     {
       resolve: 'gatsby-plugin-google-analytics',
       options: {
-        trackingId: 'G-0XFSFCNJSH',
+        trackingId: '336544491',
       },
     },
     'gatsby-plugin-image',
@@ -42,6 +42,6 @@ const config: GatsbyConfig = {
       __key: 'pages',
     },
   ],
-};
+}
 
-export default config;
+export default config
