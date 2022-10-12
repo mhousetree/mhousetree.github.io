@@ -16,6 +16,10 @@ const ResponsiveWrapper = styled.div`
   align-items: center;
   background-color: ${ColorCode.MAIN_BG_COLOR};
 
+  &[data-is-night='true'] {
+    background-color: ${ColorCode.SUB_BG_NIGHT_COLOR};
+  }
+
   &[data-location-path='/about'],
   &[data-location-path='/about/'] {
     &[data-is-night='true'] {
