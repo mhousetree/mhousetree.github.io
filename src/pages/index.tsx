@@ -118,7 +118,7 @@ const Navigation = styled.nav`
     a {
       position: absolute;
       padding: 3rem 5rem;
-      top: 40%;
+      top: 35%;
       transform: translate(-50%);
       display: block;
       text-decoration: none;
