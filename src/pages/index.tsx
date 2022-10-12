@@ -22,10 +22,10 @@ const GridMain = styled.main`
   background-position: center;
 
   &.transition {
-    animation: transition-main 1s ease-in-out 0s 1 normal both;
+    animation: transition-main 1s cubic-bezier(0.5, 0, 1, 1) 0s 1 normal both;
 
     h1 {
-      animation: transition-h1 0.5s ease-in 0s 1 normal both;
+      animation: transition-h1 1s cubic-bezier(0.5, 0, 0.5, 1) 0s 1 normal both;
     }
   }
 
@@ -35,16 +35,24 @@ const GridMain = styled.main`
       translate: 0;
     }
     to {
-      scale: 4;
-      translate: 0 100px;
+      scale: 4.5;
+      translate: 0 200px;
     }
   }
   @keyframes transition-h1 {
-    from {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+      filter: none;
+    }
+    50% {
+      filter: brightness(3) saturate(2) blur(5px);
       opacity: 1;
     }
-    to {
+    100% {
+      transform: scale(2);
       opacity: 0;
+      filter: brightness(3) saturate(2) blur(30px);
     }
   }
 `
@@ -151,7 +159,11 @@ const Branch01Wrapper = styled.div`
   filter: blur(2px);
 
   @media screen and (min-width: 1200px) {
-    width: 600px;
+    left: calc((50vw - 480px) * -1 - 12vw);
+  }
+
+  @media screen and (min-width: 1440px) {
+    width: 720px;
     left: calc((50vw - 480px) * -1 - 144px);
   }
 `
@@ -190,6 +202,10 @@ const LinkButton = styled.button`
         translate: 0;
       }
     }
+  }
+
+  @media screen and (min-width: 1200px) {
+    font-size: 72px;
   }
 `
 
