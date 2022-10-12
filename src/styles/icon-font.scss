@@ -1,0 +1,56 @@
+$icomoon-font-family: 'mhousetree-icons' !default;
+$icomoon-font-path: '../assets/fonts' !default;
+
+$mic-arrow-right: '\e900';
+$mic-arrow-left: '\e901';
+$mic-arrow-up: '\e902';
+$mic-arrow-down: '\e903';
+
+@font-face {
+  font-family: '#{$icomoon-font-family}';
+  src: url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?lshxbk')
+      format('truetype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?lshxbk')
+      format('woff'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?lshxbk##{$icomoon-font-family}')
+      format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+i {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: '#{$icomoon-font-family}' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.mic-arrow-right {
+  &:before {
+    content: $mic-arrow-right;
+  }
+}
+.mic-arrow-left {
+  &:before {
+    content: $mic-arrow-left;
+  }
+}
+.mic-arrow-up {
+  &:before {
+    content: $mic-arrow-up;
+  }
+}
+.mic-arrow-down {
+  &:before {
+    content: $mic-arrow-down;
+  }
+}

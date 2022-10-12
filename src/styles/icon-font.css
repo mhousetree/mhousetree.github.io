@@ -19,7 +19,7 @@ i {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.mic-arrow-right::before {
+.mic-arrow-right:before {
   content: "\e900";
 }
 
@@ -33,37 +33,4 @@ i {
 
 .mic-arrow-down:before {
   content: "\e903";
-}
-
-:root {
-  font-family: toppan-bunkyu-gothic-pr6n, sans-serif;
-  font-size: 16px;
-  color: #443638;
-}
-
-html {
-  background-color: #fffcf9;
-}
-html * {
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.wf-active * {
-  opacity: 1;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-a {
-  color: #e56399;
-}
-
-.simplebar-content-wrapper {
-  scroll-behavior: smooth;
-  scroll-padding-top: 2rem;
-}/*# sourceMappingURL=global.css.map */
+}/*# sourceMappingURL=icon-font.css.map */
