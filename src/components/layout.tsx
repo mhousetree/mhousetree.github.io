@@ -35,6 +35,7 @@ const ResponsiveWrapper = styled.div`
 
 const TopPageLink = styled.div`
   position: fixed;
+  z-index: 2;
   margin: 1rem 0 0 1rem;
   top: 0;
 
