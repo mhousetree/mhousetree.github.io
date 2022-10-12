@@ -19,7 +19,7 @@ i {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.mic-arrow-right::before {
+.mic-arrow-right:before {
   content: "\e900";
 }
 
@@ -66,4 +66,9 @@ a {
 .simplebar-content-wrapper {
   scroll-behavior: smooth;
   scroll-padding-top: 2rem;
+}
+
+.simplebar-scrollbar::before {
+  background-color: #fff !important;
+  box-shadow: 0 0 5px rgba(102, 82, 85, 0.5);
 }/*# sourceMappingURL=global.css.map */
