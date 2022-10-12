@@ -104,7 +104,7 @@ const IndexPage = () => {
               <Link to="/about">About</Link>
             </li>
             <li>
-              <Link to="/">Works</Link>
+              <Link to="/works">Works</Link>
             </li>
           </ul>
         </Navigation>
