@@ -5,4 +5,5 @@ export const ColorCode = {
   SUB_BG_NIGHT_COLOR: '#79868E',
   MAIN_TEXT_COLOR: '#443638',
   LIGHT_TEXT_COLOR: '#665255',
+  ACCENT_COLOR: '#e56399',
 }
