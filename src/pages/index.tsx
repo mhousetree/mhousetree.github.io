@@ -46,13 +46,13 @@ const GridMain = styled.main`
       filter: none;
     }
     50% {
-      filter: brightness(3) saturate(2) blur(5px);
+      filter: brightness(4) saturate(1.5) hue-rotate(-10deg) blur(5px);
       opacity: 1;
     }
     100% {
       transform: scale(2);
       opacity: 0;
-      filter: brightness(3) saturate(2) blur(30px);
+      filter: brightness(4) saturate(1.5) hue-rotate(-10deg) blur(30px);
     }
   }
 `
