@@ -10,6 +10,7 @@ import { Layout } from '../components/layout'
 import styled from 'styled-components'
 
 import { ColorCode } from '../constants/colors'
+import { isNight } from '../utils/night-mode'
 
 const GridMain = styled.main`
   height: 100%;
@@ -64,6 +65,10 @@ const MainContent = styled.div`
   box-shadow: 0 0 32px ${ColorCode.MAIN_BG_COLOR};
   animation: switch-on-1 0.3s ease-in-out 0.5s 1 normal both,
     switch-on-2 0.3s ease-in-out 0.7s 1 normal both;
+
+  &[data-is-night='true'] {
+    background-color: ${rgba(ColorCode.MAIN_BG_COLOR, 0.9)};
+  }
 
   @keyframes switch-on-1 {
     from {
@@ -203,6 +208,12 @@ const LinksWrapper = styled.ul`
   li {
     width: 100px;
     text-align: center;
+
+    .gatsby-image-wrapper {
+      margin-bottom: 0.5rem;
+      background-color: #fff;
+      border-radius: 50%;
+    }
   }
 
   a {
@@ -239,7 +250,7 @@ const AboutPage = () => {
             </li>
           </ul>
         </Navigation>
-        <MainContent>
+        <MainContent data-is-night={isNight()}>
           <h1>About</h1>
           <SimpleBar style={{ height: '100%' }} autoHide={true}>
             <Level2Section>

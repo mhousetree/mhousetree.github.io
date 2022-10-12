@@ -1,11 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useLocation } from '@reach/router'
-import { rgba } from 'polished'
 
 import { ColorCode } from '../constants/colors'
 import { Link } from 'gatsby'
 import { StaticImage } from 'gatsby-plugin-image'
+import { isNight } from '../utils/night-mode'
 
 const ResponsiveWrapper = styled.div`
   min-height: 100vh;
@@ -16,6 +16,9 @@ const ResponsiveWrapper = styled.div`
 
   &[data-location-path='/about'],
   &[data-location-path='/about/'] {
+    &[data-is-night='true'] {
+      animation: about-bg-night 0.5s ease-in-out 0s 1 normal both;
+    }
     animation: about-bg 0.5s ease-in-out 0s 1 normal both;
   }
 
@@ -25,6 +28,15 @@ const ResponsiveWrapper = styled.div`
     }
     to {
       background-color: ${ColorCode.SUB_BG_DARK_COLOR};
+    }
+  }
+
+  @keyframes about-bg-night {
+    from {
+      background-color: ${ColorCode.SUB_BG_COLOR};
+    }
+    to {
+      background-color: ${ColorCode.SUB_BG_NIGHT_COLOR};
     }
   }
 
@@ -147,8 +159,6 @@ const SubPageLink = styled.div`
 export const Layout = ({ children }: LayoutProps) => {
   const location = useLocation()
 
-  console.log(location)
-
   const topPageLink = location.pathname !== '/' && (
     <TopPageLink>
       <Link to="/">
@@ -189,7 +199,10 @@ export const Layout = ({ children }: LayoutProps) => {
   )
 
   return (
-    <ResponsiveWrapper data-location-path={location.pathname}>
+    <ResponsiveWrapper
+      data-location-path={location.pathname}
+      data-is-night={isNight()}
+    >
       {topPageLink}
       {subPageLink}
       {children}
