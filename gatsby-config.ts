@@ -2,7 +2,7 @@ import type { GatsbyConfig } from 'gatsby'
 
 const config: GatsbyConfig = {
   siteMetadata: {
-    title: `Mhousetree's Portfolio - v2`,
+    title: `Mhousetree's Portfolio`,
     description: `This is Mhousetree's portfolio website.`,
     twitterUsername: `@mhousetree`,
     image: `/icon.png`,
