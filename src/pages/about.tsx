@@ -91,11 +91,6 @@ const MainContent = styled.div`
     }
   }
 
-  .simplebar-scrollbar::before {
-    background-color: #fff;
-    box-shadow: 0 0 5px ${rgba(ColorCode.LIGHT_TEXT_COLOR, 0.5)};
-  }
-
   h1,
   h2 {
     text-align: center;
