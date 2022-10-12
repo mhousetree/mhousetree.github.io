@@ -63,9 +63,6 @@ const Navigation = styled.nav`
     mask-image: linear-gradient(to bottom, #000 70%, transparent 100%);
     transition: 0.3s;
 
-    li {
-    }
-
     a {
       display: block;
       color: ${ColorCode.MAIN_TEXT_COLOR};
@@ -162,14 +159,14 @@ const WorksWrapper = styled.section`
     a {
       display: block;
       margin: 0 auto 0 0;
-      padding: 0.7rem 1.1rem 0 1rem;
+      padding: 0.5rem 1.1rem 0 1rem;
       height: 0;
       width: fit-content;
       border: 1px solid ${ColorCode.ACCENT_COLOR};
 
       font-family: 'Shelby', sans-serif;
       text-decoration: none;
-      font-size: 3rem;
+      font-size: 2rem;
       line-height: 1;
 
       clip-path: inset(0 100% 0 0);
@@ -182,7 +179,7 @@ const WorksWrapper = styled.section`
 
       a {
         clip-path: inset(0 0 0 0);
-        height: 61.2px;
+        height: 42px;
         margin: 1rem auto 0 0;
 
         &:hover {
