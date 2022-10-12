@@ -36,7 +36,7 @@ const MainTitle = styled.h1`
 
 const Navigation = styled.nav`
   width: 70%;
-  height: calc(32vw);
+  height: 32vw;
 
   position: absolute;
   bottom: calc((100vh - 60vw) / 2);
@@ -47,8 +47,9 @@ const Navigation = styled.nav`
   font-size: calc(72px - (1200px - 100vw) * 0.05);
 
   @media screen and (min-width: 1200px) {
-    width: 384px;
-    bottom: calc((100vh - 600px) / 2);
+    width: 840px;
+    height: 384px;
+    bottom: calc((100vh - 720px) / 2);
     font-size: 72px;
   }
 
@@ -57,10 +58,6 @@ const Navigation = styled.nav`
     display: flex;
     justify-content: center;
     height: 100%;
-
-    @media screen and (min-width: 1200px) {
-      gap: 180px;
-    }
 
     li {
       position: relative;
@@ -74,6 +71,9 @@ const Navigation = styled.nav`
         margin-left: 10px;
         z-index: 2;
         transform-origin: right center;
+
+        @media screen and (min-width: 1200px) {
+        }
 
         a {
           left: 60%;
@@ -98,18 +98,14 @@ const Navigation = styled.nav`
       @keyframes grass {
         0% {
           translate: 0;
-          transform: scaleX(1);
         }
         25% {
           translate: -1px;
-          transform: scaleX(0.999);
         }
-        50% {
-          transform: scaleX(1.001);
+        75% {
           translate: 1px;
         }
         100% {
-          transform: scaleX(1);
           translate: 0;
         }
       }
@@ -117,8 +113,8 @@ const Navigation = styled.nav`
 
     a {
       position: absolute;
-      padding: 3rem 5rem;
-      top: 35%;
+      padding: 10% 20%;
+      top: 40%;
       transform: translate(-50%);
       display: block;
       text-decoration: none;
@@ -135,10 +131,10 @@ const Navigation = styled.nav`
             translate: 0;
           }
           25% {
-            translate: -2px;
+            translate: -3px;
           }
-          50% {
-            translate: 2px;
+          75% {
+            translate: 3px;
           }
           100% {
             translate: 0;
