@@ -180,6 +180,8 @@ export const Layout = ({ children }: LayoutProps) => {
           placeholder="none"
           src="../images/icon.svg"
           alt="Go to Toppage"
+          width={48}
+          height={48}
         />
         <div id="text-wrapper">
           <p>Go to Top</p>
