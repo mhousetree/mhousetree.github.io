@@ -1,16 +1,11 @@
-name: GitHub Pages
-
 on:
   push:
     branches:
       - main
-  pull_request:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
-    permissions:
-      contents: write
+    runs-on: ubuntu-latest
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
