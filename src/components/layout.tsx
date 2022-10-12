@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useLocation } from '@reach/router'
+import SimpleBar from 'simplebar-react'
+import 'simplebar-react/dist/simplebar.min.css'
 
 import { ColorCode } from '../constants/colors'
 import { Link } from 'gatsby'
@@ -38,6 +40,11 @@ const ResponsiveWrapper = styled.div`
     to {
       background-color: ${ColorCode.SUB_BG_NIGHT_COLOR};
     }
+  }
+
+  &[data-location-path='/works'],
+  &[data-location-path='/works/'] {
+    background-color: ${ColorCode.SUB_BG_COLOR};
   }
 
   main {
@@ -105,6 +112,8 @@ const SubPageLink = styled.div`
   position: fixed;
   font-family: 'Shelby', sans-serif;
   font-size: calc(64px - (1200px - 100vw) * 0.05);
+  top: 50%;
+  translate: 0 -50%;
 
   @media screen and (min-width: 1200px) {
     font-size: 64px;
@@ -199,14 +208,16 @@ export const Layout = ({ children }: LayoutProps) => {
   )
 
   return (
-    <ResponsiveWrapper
-      data-location-path={location.pathname}
-      data-is-night={isNight()}
-    >
-      {topPageLink}
-      {subPageLink}
-      {children}
-    </ResponsiveWrapper>
+    <SimpleBar style={{ height: '100vh' }} autoHide={true}>
+      <ResponsiveWrapper
+        data-location-path={location.pathname}
+        data-is-night={isNight()}
+      >
+        {topPageLink}
+        {subPageLink}
+        {children}
+      </ResponsiveWrapper>
+    </SimpleBar>
   )
 }
 
