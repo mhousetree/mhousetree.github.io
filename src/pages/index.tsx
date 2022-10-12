@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { HeadFC, Link } from 'gatsby'
+import { HeadFC, Link, navigate } from 'gatsby'
 import Lottie from 'lottie-react'
 
 import { Seo } from '../components/seo'
@@ -14,15 +14,43 @@ import logoAnimation from '../animations/logoAnimation.json'
 import { ColorCode } from '../constants/colors'
 
 const GridMain = styled.main`
-  height: 100%;
+  position: relative;
+  height: 100vh;
   background-image: url(${window});
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+
+  &.transition {
+    animation: transition-main 1s ease-in-out 0s 1 normal both;
+
+    h1 {
+      animation: transition-h1 0.5s ease-in 0s 1 normal both;
+    }
+  }
+
+  @keyframes transition-main {
+    from {
+      scale: 1;
+      translate: 0;
+    }
+    to {
+      scale: 4;
+      translate: 0 100px;
+    }
+  }
+  @keyframes transition-h1 {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
 `
 
 const MainTitle = styled.h1`
-  width: 40%;
+  width: 40vw;
   position: absolute;
   top: calc(50% - 2.5vw);
   left: 50%;
@@ -35,16 +63,13 @@ const MainTitle = styled.h1`
 `
 
 const Navigation = styled.nav`
-  width: 70%;
+  width: 70vw;
   height: 32vw;
 
   position: absolute;
   bottom: calc((100vh - 60vw) / 2);
   left: 50%;
   translate: -50% 0;
-
-  font-family: 'Shelby', sans-serif;
-  font-size: calc(72px - (1200px - 100vw) * 0.05);
 
   @media screen and (min-width: 1200px) {
     width: 840px;
@@ -75,7 +100,7 @@ const Navigation = styled.nav`
         @media screen and (min-width: 1200px) {
         }
 
-        a {
+        button {
           left: 60%;
         }
       }
@@ -86,13 +111,13 @@ const Navigation = styled.nav`
         background-image: url(${grassWorks});
         transform-origin: left center;
 
-        a {
+        button {
           left: 40%;
         }
       }
     }
 
-    li:has(a:hover) {
+    li:has(button:hover) {
       animation: grass 0.3s ease-in-out 0.05s 1 normal both;
 
       @keyframes grass {
@@ -110,60 +135,73 @@ const Navigation = styled.nav`
         }
       }
     }
-
-    a {
-      position: absolute;
-      padding: 10% 20%;
-      top: 40%;
-      transform: translate(-50%);
-      display: block;
-      text-decoration: none;
-      color: #fff;
-      text-shadow: 0 0 20px ${ColorCode.LIGHT_TEXT_COLOR},
-        0 0 10px ${ColorCode.LIGHT_TEXT_COLOR},
-        0 0 2px ${ColorCode.LIGHT_TEXT_COLOR};
-      transition: 0.3s;
-
-      &:hover {
-        animation: text 0.3s ease-in-out 0s 1 normal both;
-        @keyframes text {
-          0% {
-            translate: 0;
-          }
-          25% {
-            translate: -3px;
-          }
-          75% {
-            translate: 3px;
-          }
-          100% {
-            translate: 0;
-          }
-        }
-      }
-    }
   }
 `
 
 const Branch01Wrapper = styled.div`
   position: absolute;
   z-index: 2;
-  top: 30%;
-  left: -10%;
-  width: 50%;
+  top: 30vh;
+  left: -22vw;
+  width: 50vw;
 
   rotate: -15deg;
   translate: 0 -50%;
 
   filter: blur(2px);
 
-  @media screen and (min-width: 1440px) {
-    width: 720px;
-    left: -145px;
+  @media screen and (min-width: 1200px) {
+    width: 600px;
+    left: calc((50vw - 480px) * -1 - 144px);
+  }
+`
+
+const LinkButton = styled.button`
+  cursor: pointer;
+  position: absolute;
+  padding: 10% 20%;
+  top: 35%;
+  transform: translate(-50%);
+  display: block;
+  font-family: 'Shelby', sans-serif;
+  font-size: calc(72px - (1200px - 100vw) * 0.05);
+  text-decoration: none;
+  color: #fff;
+  border: none;
+  background-color: transparent;
+  text-shadow: 0 0 20px ${ColorCode.LIGHT_TEXT_COLOR},
+    0 0 10px ${ColorCode.LIGHT_TEXT_COLOR},
+    0 0 2px ${ColorCode.LIGHT_TEXT_COLOR};
+  transition: 0.3s;
+
+  &:hover {
+    animation: text 0.3s ease-in-out 0s 1 normal both;
+    @keyframes text {
+      0% {
+        translate: 0;
+      }
+      25% {
+        translate: -3px;
+      }
+      75% {
+        translate: 3px;
+      }
+      100% {
+        translate: 0;
+      }
+    }
   }
 `
 
 const IndexPage = () => {
+  const pageTransition = (to: string) => {
+    const target = document.getElementsByTagName('main')[0]
+
+    target.classList.add('transition')
+
+    setTimeout(() => navigate(to), 1000)
+  }
+
   return (
     <Layout>
       <GridMain>
@@ -177,10 +215,14 @@ const IndexPage = () => {
         <Navigation>
           <ul>
             <li>
-              <Link to="/about">About</Link>
+              <LinkButton onClick={() => pageTransition('/about')}>
+                About
+              </LinkButton>
             </li>
             <li>
-              <Link to="/works">Works</Link>
+              <LinkButton onClick={() => pageTransition('/works')}>
+                Works
+              </LinkButton>
             </li>
           </ul>
         </Navigation>
