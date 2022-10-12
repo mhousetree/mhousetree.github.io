@@ -144,6 +144,8 @@ const SkillsWrapper = styled.div`
   width: 80%;
   margin: 0 auto;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  justify-items: center;
+  row-gap: 2rem;
   font-size: 0.9rem;
 
   div {
