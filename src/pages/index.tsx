@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { HeadFC, Link, navigate } from 'gatsby'
+import { HeadFC, navigate } from 'gatsby'
 import Lottie from 'lottie-react'
 
 import { Seo } from '../components/seo'
