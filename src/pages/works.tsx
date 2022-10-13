@@ -1,8 +1,6 @@
 import * as React from 'react'
 import { HeadFC, Link } from 'gatsby'
 import { rgba } from 'polished'
-import SimpleBar from 'simplebar-react'
-import 'simplebar-react/dist/simplebar.min.css'
 
 import { Seo } from '../components/seo'
 import { StaticImage } from 'gatsby-plugin-image'
