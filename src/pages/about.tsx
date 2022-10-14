@@ -139,7 +139,7 @@ const ProfileWrapper = styled.div`
     margin-bottom: 0.5rem;
   }
 
-  @media screen and (max-width: 930px) {
+  @media screen and (max-width: 940px) {
     grid-template-columns: repeat(2, 1fr);
     align-items: flex-start;
 
@@ -225,7 +225,7 @@ const LinksWrapper = styled.ul`
     width: 100px;
     text-align: center;
 
-    .gatsby-image-wrapper {
+    img {
       margin-bottom: 0.5rem;
       background-color: #fff;
       border-radius: 50%;
@@ -246,6 +246,38 @@ const LinksWrapper = styled.ul`
 const AboutPage = () => {
   const data = useStaticQuery(graphql`
     query {
+      allGraphCmsProfile {
+        nodes {
+          hobby
+          sns {
+            url
+            title
+            icon {
+              url
+            }
+          }
+        }
+      }
+      allGraphCmsSkill(filter: { isTopLevel: { eq: true } }) {
+        nodes {
+          title
+          category
+          level
+          from
+          subSkills {
+            title
+            category
+            level
+            from
+          }
+        }
+      }
+      allGraphCmsCertification(sort: { fields: date, order: ASC }) {
+        nodes {
+          title
+          date
+        }
+      }
       allGraphCmsHistory(
         sort: { fields: from, order: ASC }
         filter: { isTopLevel: { eq: true } }
@@ -268,9 +300,42 @@ const AboutPage = () => {
     }
   `)
 
+  const { hobby: hobbies, sns: snsInfos }: GraphCmsProfile =
+    data.allGraphCmsProfile.nodes[0]
+
+  const skills: GraphCmsSkill[] = data.allGraphCmsSkill.nodes
+
+  const frontendSkills = skills.filter((skill) => skill.category === 'Frontend')
+  const designSkills = skills.filter((skill) => skill.category === 'Design')
+  const otherSkills = skills.filter((skill) => skill.category === 'Other')
+
+  const certifications: GraphCmsCertification[] =
+    data.allGraphCmsCertification.nodes
+
   const histories: History[] = data.allGraphCmsHistory.nodes.map(
     (h: GraphCmsHistory) => new History(h)
   )
+
+  const renderSkills = (sourceSkills: GraphCmsSkill[]) => {
+    return sourceSkills.map((skill) => {
+      return (
+        <li key={skill.title}>
+          {skill.title} ({new Date(skill.from).getFullYear()} -)
+          {skill.subSkills?.length !== 0 && (
+            <ul>
+              {skill.subSkills?.map((subSkill) => {
+                return (
+                  <li key={subSkill.title}>
+                    {subSkill.title} ({new Date(subSkill.from).getFullYear()} -)
+                  </li>
+                )
+              })}
+            </ul>
+          )}
+        </li>
+      )
+    })
+  }
 
   return (
     <Layout>
@@ -320,10 +385,25 @@ const AboutPage = () => {
                 <HobbiesWrapper>
                   <h3>Hobbies</h3>
                   <ul>
-                    <li>hoge</li>
-                    <li>fuga</li>
-                    <li>piyo</li>
+                    {hobbies.map((hobby) => (
+                      <li key={hobby}>{hobby}</li>
+                    ))}
                   </ul>
+                  <p>
+                    趣味の様子は{' '}
+                    <a
+                      href={
+                        snsInfos.find(
+                          (snsInfo) => snsInfo.title === 'Instagram'
+                        )?.url
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Instagram
+                    </a>{' '}
+                    でご覧いただけます。
+                  </p>
                 </HobbiesWrapper>
               </ProfileWrapper>
             </Level2Section>
@@ -332,48 +412,22 @@ const AboutPage = () => {
               <SkillsWrapper>
                 <div>
                   <h3>Frontend</h3>
-                  <ul>
-                    <li>HTML(2016 -)</li>
-                    <li>
-                      CSS(2016 -)
-                      <ul>
-                        <li>SCSS(2020 -)</li>
-                        <li>CSS animation(2021 -)</li>
-                      </ul>
-                    </li>
-                    <li>JavaScript(2021 -)</li>
-                    <li>TypeScript(2022 -)</li>
-                    <li>Vue.js(2021 -)</li>
-                    <li>
-                      React(2021 -)
-                      <ul>
-                        <li>Gatsby(2021 -)</li>
-                      </ul>
-                    </li>
-                  </ul>
+                  <ul>{renderSkills(frontendSkills)}</ul>
                 </div>
                 <div>
                   <h3>Design</h3>
-                  <ul>
-                    <li>Adobe Illustrator(2016 -)</li>
-                    <li>Adobe Photoshop(2016 -)</li>
-                    <li>Adobe Premire Pro(2022 -)</li>
-                    <li>Figma(2022 -)</li>
-                  </ul>
+                  <ul>{renderSkills(designSkills)}</ul>
                 </div>
                 <div>
                   <h3>Other</h3>
                   <ul>
-                    <li>TOEIC(IPテスト) 900点(2021)</li>
-                    <li>実用英語技能検定 準一級(2021)</li>
-                    <li>基本情報技術者試験(2021)</li>
-                    <li>
-                      Python(2020 -)
-                      <ul>
-                        <li>FastAPI(2021 -)</li>
-                        <li>Django(2020 -)</li>
-                      </ul>
-                    </li>
+                    {certifications.map((certification) => (
+                      <li key={certification.title}>
+                        {certification.title} (
+                        {new Date(certification.date).getFullYear()})
+                      </li>
+                    ))}
+                    {renderSkills(otherSkills)}
                   </ul>
                 </div>
               </SkillsWrapper>
@@ -387,15 +441,13 @@ const AboutPage = () => {
                     <ul>
                       {history.subHistories?.map((subHistory) => {
                         return (
-                          <li>
+                          <li key={subHistory.title}>
                             <h3>{subHistory.title}</h3>
-                            <p>
-                              {subHistory.workingPeriod.toString()}
-                            </p>
+                            <p>{subHistory.workingPeriod.toString()}</p>
                             {subHistory.detail.length !== 0 && (
                               <ul>
                                 {subHistory.detail.map((detail) => (
-                                  <li>{detail}</li>
+                                  <li key={detail}>{detail}</li>
                                 ))}
                               </ul>
                             )}
@@ -406,11 +458,9 @@ const AboutPage = () => {
                   )
 
                   return (
-                    <li>
+                    <li key={history.title}>
                       <h3>{history.title}</h3>
-                      <p>
-                        {history.workingPeriod.toString()}
-                      </p>
+                      <p>{history.workingPeriod.toString()}</p>
                       {renderSubHistory}
                     </li>
                   )
@@ -420,48 +470,21 @@ const AboutPage = () => {
             <Level2Section>
               <h2 id="links">Links</h2>
               <LinksWrapper>
-                <li>
-                  <a
-                    href="https://twitter.com/mhousetree"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <StaticImage
-                      placeholder="none"
-                      src="../images/twitter.svg"
-                      alt="Twitter icon"
-                    />
-                    Twitter
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://qiita.com/mhousetree"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <StaticImage
-                      placeholder="none"
-                      src="../images/qiita.svg"
-                      alt="Qiita icon"
-                    />
-                    Qiita
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://github.com/mhousetree"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <StaticImage
-                      placeholder="none"
-                      src="../images/github.svg"
-                      alt="GitHub icon"
-                    />
-                    GitHub
-                  </a>
-                </li>
+                {snsInfos.map((snsInfo) => (
+                  <li key={snsInfo.title}>
+                    <a
+                      href={snsInfo.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <img
+                        src={snsInfo.icon.url}
+                        alt={snsInfo.title + ' Icon'}
+                      />
+                      {snsInfo.title}
+                    </a>
+                  </li>
+                ))}
               </LinksWrapper>
             </Level2Section>
             <Level2Section>
@@ -483,6 +506,32 @@ export const Head: HeadFC = () => (
   <Seo title="About" description="Informations about Mhousetree" />
 )
 
+type GraphCmsProfile = {
+  hobby: string[]
+  sns: GraphCmsSnsInfo[]
+}
+
+type GraphCmsSnsInfo = {
+  url: string
+  title: string
+  icon: {
+    url: string
+  }
+}
+
+type GraphCmsSkill = {
+  title: string
+  category: 'Frontend' | 'Design' | 'Other'
+  level: number
+  from: string
+  subSkills?: GraphCmsSkill[]
+}
+
+type GraphCmsCertification = {
+  title: string
+  date: string
+}
+
 type GraphCmsHistory = {
   title: string
   detail: string[]
@@ -494,35 +543,33 @@ type GraphCmsHistory = {
 
 class History {
   // properties
-  title: string;
-  detail: string[];
-  workingPeriod: WorkingPeriod;
-  subHistories?: History[];
+  title: string
+  detail: string[]
+  workingPeriod: WorkingPeriod
+  subHistories?: History[]
 
   // constructor
   constructor(graphCmsHistory: GraphCmsHistory) {
-    this.title = graphCmsHistory.title;
-    this.detail = graphCmsHistory.detail;
+    this.title = graphCmsHistory.title
+    this.detail = graphCmsHistory.detail
     this.workingPeriod = new WorkingPeriod(
       graphCmsHistory.nowWorking,
       graphCmsHistory.from,
-      graphCmsHistory.to,
+      graphCmsHistory.to
     )
-    this.subHistories = graphCmsHistory.subHistories?.map(
-      (h) => new History(h)
-    );
+    this.subHistories = graphCmsHistory.subHistories?.map((h) => new History(h))
   }
 }
 
 class WorkingPeriod {
-  private from: string;
-  private to?: string;
-  private nowWorking: boolean;
+  private from: string
+  private to?: string
+  private nowWorking: boolean
 
   constructor(nowWorking: boolean, from: string, to?: string) {
-    this.nowWorking = nowWorking;
-    this.from = from;
-    this.to = to;
+    this.nowWorking = nowWorking
+    this.from = from
+    this.to = to
   }
 
   toString(): string {
