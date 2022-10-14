@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { HeadFC, Link } from 'gatsby'
+import { graphql, HeadFC, Link, useStaticQuery } from 'gatsby'
 import { rgba } from 'polished'
 import SimpleBar from 'simplebar-react'
 import 'simplebar-react/dist/simplebar.min.css'
@@ -223,6 +223,34 @@ const LinksWrapper = styled.ul`
 `
 
 const AboutPage = () => {
+  const data = useStaticQuery(graphql`
+    query {
+      allGraphCmsHistory(
+        sort: { fields: from, order: ASC }
+        filter: { isTopLevel: { eq: true } }
+      ) {
+        nodes {
+          title
+          detail
+          from
+          to
+          nowWorking
+          subHistories {
+            title
+            detail
+            from
+            to
+            nowWorking
+          }
+        }
+      }
+    }
+  `)
+
+  const histories: History[] = data.allGraphCmsHistory.nodes.map(
+    (h: GraphCmsHistory) => new History(h)
+  )
+
   return (
     <Layout>
       <GridMain>
@@ -332,69 +360,40 @@ const AboutPage = () => {
             <Level2Section>
               <h2 id="history">History</h2>
               <HistoryWrapper>
-                <li>
-                  <h3>滋賀県立守山高等学校 普通科</h3>
-                  <p>2013.4 - 2016.3</p>
-                </li>
-                <li>
-                  <h3>筑波大学 情報学群 情報メディア創成学類</h3>
-                  <p>2016.4 - 2022.3</p>
-                  <ul>
+                {histories.map((history) => {
+                  const renderSubHistory = history.subHistories?.length !==
+                    0 && (
+                    <ul>
+                      {history.subHistories?.map((subHistory) => {
+                        return (
+                          <li>
+                            <h3>{subHistory.title}</h3>
+                            <p>
+                              {subHistory.workingPeriod.toString()}
+                            </p>
+                            {subHistory.detail.length !== 0 && (
+                              <ul>
+                                {subHistory.detail.map((detail) => (
+                                  <li>{detail}</li>
+                                ))}
+                              </ul>
+                            )}
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  )
+
+                  return (
                     <li>
-                      <h3>
-                        サイエンスウェブ株式会社
-                        マークアップエンジニア(アルバイト)
-                      </h3>
-                      <p>2019.7 - 2022.3</p>
-                      <ul className="role">
-                        <li>HTML/CSS/JavaScriptを用いた静的Webサイトの制作</li>
-                        <li>CMS(WordPress, MODX)を用いたWebサイトの構築</li>
-                        <li>
-                          デザインデータ(psd形式)からのスライス等、デザインを基にしたWebサイト制作の技術を習得
-                        </li>
-                      </ul>
+                      <h3>{history.title}</h3>
+                      <p>
+                        {history.workingPeriod.toString()}
+                      </p>
+                      {renderSubHistory}
                     </li>
-                    <li>
-                      <h3>
-                        株式会社ツクリエ
-                        メールマガジン/イベントバナー制作(受付と兼任、アルバイト)
-                      </h3>
-                      <p>2020.9 - 2021.3</p>
-                      <ul className="role">
-                        <li>HTMLメールの作成</li>
-                        <li>HTMLメール作成ツールの開発</li>
-                        <li>施設内開催イベントのイベントバナー制作</li>
-                      </ul>
-                    </li>
-                    <li>
-                      <h3>
-                        株式会社Penqe
-                        フロントエンドエンジニア(長期インターンシップ)
-                      </h3>
-                      <p>2020.12 - 2021.3</p>
-                      <ul className="role">
-                        <li>
-                          CMS(WordPress)を用いたWebサイトの制作(リニューアル作業)
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <h3>
-                        株式会社ナビタイムジャパン
-                        エンジニア体験インターンシップ
-                      </h3>
-                      <p>2021.2</p>
-                    </li>
-                    <li>
-                      <h3>株式会社PR TIMES オンラインハッカソン</h3>
-                      <p>2021.6</p>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <h3>楽天グループ株式会社 Application Engineer</h3>
-                  <p>2022.4 - 現在</p>
-                </li>
+                  )
+                })}
               </HistoryWrapper>
             </Level2Section>
             <Level2Section>
@@ -462,3 +461,62 @@ export default AboutPage
 export const Head: HeadFC = () => (
   <Seo title="About" description="Informations about Mhousetree" />
 )
+
+type GraphCmsHistory = {
+  title: string
+  detail: string[]
+  from: string
+  to?: string
+  nowWorking: boolean
+  subHistories?: GraphCmsHistory[]
+}
+
+class History {
+  // properties
+  title: string;
+  detail: string[];
+  workingPeriod: WorkingPeriod;
+  subHistories?: History[];
+
+  // constructor
+  constructor(graphCmsHistory: GraphCmsHistory) {
+    this.title = graphCmsHistory.title;
+    this.detail = graphCmsHistory.detail;
+    this.workingPeriod = new WorkingPeriod(
+      graphCmsHistory.nowWorking,
+      graphCmsHistory.from,
+      graphCmsHistory.to,
+    )
+    this.subHistories = graphCmsHistory.subHistories?.map(
+      (h) => new History(h)
+    );
+  }
+}
+
+class WorkingPeriod {
+  private from: string;
+  private to?: string;
+  private nowWorking: boolean;
+
+  constructor(nowWorking: boolean, from: string, to?: string) {
+    this.nowWorking = nowWorking;
+    this.from = from;
+    this.to = to;
+  }
+
+  toString(): string {
+    if (this.to) {
+      return `${this.getYearMonth(this.from)} - ${this.getYearMonth(this.to)}`
+    } else if (this.nowWorking) {
+      return `${this.getYearMonth(this.from)} - 現在`
+    } else {
+      return this.getYearMonth(this.from)
+    }
+  }
+
+  // 2022.1 のように yyyy.MM の形式の文字列を返す
+  private getYearMonth(dateString: string): string {
+    const date = new Date(dateString)
+    return `${date.getFullYear()}.${date.getMonth() + 1}`
+  }
+}

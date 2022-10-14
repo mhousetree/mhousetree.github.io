@@ -1,6 +1,8 @@
 node_modules/
+graphcms-fragments/
 .cache/
 public
 src/gatsby-types.d.ts
 .vscode/
 .DS_Store
+.env.*

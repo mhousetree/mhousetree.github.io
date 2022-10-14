@@ -1,5 +1,9 @@
 import type { GatsbyConfig } from 'gatsby'
 
+require('dotenv').config({
+  path: `.env.${process.env.NODE_ENV}`,
+})
+
 const config: GatsbyConfig = {
   siteMetadata: {
     title: `Mhousetree's Portfolio`,
@@ -40,6 +44,12 @@ const config: GatsbyConfig = {
         path: './src/pages/',
       },
       __key: 'pages',
+    },
+    {
+      resolve: 'gatsby-source-graphcms',
+      options: {
+        endpoint: process.env.GATSBY_HYGRAPH_ENDPOINT,
+      },
     },
   ],
 }
