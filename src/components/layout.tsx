@@ -214,8 +214,6 @@ export const Layout = ({ children }: LayoutProps) => {
     </SubPageLink>
   )
 
-  console.log(isNight())
-
   return (
     <SimpleBar style={{ height: '100vh' }} autoHide={true}>
       <ResponsiveWrapper
