@@ -14,6 +14,17 @@ const GridMain = styled.main`
   display: grid;
   padding-top: 84px;
   grid-template-rows: max-content 1fr;
+  animation: main-appear 0.5s ease-in-out 0.5s 1 normal both;
+
+  @keyframes main-appear {
+    from {
+      clip-path: inset(0 -20px 100% -20px);
+    }
+
+    to {
+      clip-path: inset(0 -20px 0 -20px);
+    }
+  }
 `
 
 const Navigation = styled.nav`
@@ -24,14 +35,14 @@ const Navigation = styled.nav`
   width: min(960px, 80%);
   border-radius: 0 0 2px 2px;
   padding: 1rem 0;
-  animation: slide-appear 0.5s ease-in-out 0s 1 normal both;
+  animation: slide-appear 1s ease-out 0s 1 normal both;
   backdrop-filter: blur(5px);
   mask-image: linear-gradient(to bottom, #000 90%, transparent 100%);
   background-color: ${rgba(ColorCode.SUB_BG_COLOR, 0.5)};
 
   @keyframes slide-appear {
     from {
-      translate: 0 -152px;
+      translate: 0 -84px;
     }
     to {
       translate: 0;
@@ -150,8 +161,12 @@ const WorksWrapper = styled.section`
     > :first-child {
       width: 40%;
       aspect-ratio: 1;
-      border: 1rem solid ${ColorCode.MAIN_TEXT_COLOR};
+      border: 1.2vw solid ${ColorCode.MAIN_TEXT_COLOR};
       box-shadow: 4px 4px 12px ${rgba(ColorCode.MAIN_TEXT_COLOR, 0.2)};
+
+      @media screen and (min-width: 1200px) {
+        border-width: 14.4px;
+      }
     }
 
     a {
