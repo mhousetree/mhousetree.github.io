@@ -122,6 +122,7 @@ const Level2Section = styled.section`
 const ProfileWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  padding: 0 3rem;
   gap: 2rem;
   align-items: center;
 
@@ -134,6 +135,26 @@ const ProfileWrapper = styled.div`
   }
 
   p {
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+  }
+
+  @media screen and (max-width: 930px) {
+    grid-template-columns: repeat(2, 1fr);
+    align-items: flex-start;
+
+    .gatsby-image-wrapper {
+      grid-row: 1;
+      grid-column: 1 / -1;
+      width: min(60%, 300px);
+      margin: 0 auto;
+    }
+  }
+`
+
+const HobbiesWrapper = styled.div`
+  font-size: 0.9rem;
+  ul {
     line-height: 1.5;
     margin-bottom: 0.5rem;
   }
@@ -296,14 +317,14 @@ const AboutPage = () => {
                   src="../images/profile.jpg"
                   alt="Photo of Mhousetree"
                 />
-                <div>
+                <HobbiesWrapper>
                   <h3>Hobbies</h3>
                   <ul>
                     <li>hoge</li>
                     <li>fuga</li>
                     <li>piyo</li>
                   </ul>
-                </div>
+                </HobbiesWrapper>
               </ProfileWrapper>
             </Level2Section>
             <Level2Section>
