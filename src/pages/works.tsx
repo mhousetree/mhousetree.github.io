@@ -228,7 +228,7 @@ const AboutPage = () => {
           <input type="checkbox" name="tags-show" id="tags" />
           <ul>
             {tags.map((tag) => (
-              <li>
+              <li key={tag.name}>
                 <Link to="/">{tag.name}</Link>
               </li>
             ))}
