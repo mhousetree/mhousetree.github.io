@@ -11,7 +11,6 @@ import styled from 'styled-components'
 
 import { ColorCode } from '../constants/colors'
 import { isNight } from '../utils/night-mode'
-import { getYearMonth } from '../utils/get-year-month'
 
 const GridMain = styled.main`
   height: 100%;
@@ -248,7 +247,9 @@ const AboutPage = () => {
     }
   `)
 
-  const histories = data.allGraphCmsHistory.nodes
+  const histories: History[] = data.allGraphCmsHistory.nodes.map(
+    (h: GraphCmsHistory) => new History(h)
+  )
 
   return (
     <Layout>
@@ -359,27 +360,7 @@ const AboutPage = () => {
             <Level2Section>
               <h2 id="history">History</h2>
               <HistoryWrapper>
-                {histories.map((history: History) => {
-                  const getWorkingPeriod = (
-                    from: string,
-                    nowWorking: boolean,
-                    to?: string
-                  ) => {
-                    let workingPeriod
-
-                    if (to) {
-                      workingPeriod = `${getYearMonth(from)} - ${getYearMonth(
-                        to
-                      )}`
-                    } else if (nowWorking) {
-                      workingPeriod = `${getYearMonth(from)} - 現在`
-                    } else {
-                      workingPeriod = getYearMonth(from)
-                    }
-
-                    return workingPeriod
-                  }
-
+                {histories.map((history) => {
                   const renderSubHistory = history.subHistories?.length !==
                     0 && (
                     <ul>
@@ -388,11 +369,7 @@ const AboutPage = () => {
                           <li>
                             <h3>{subHistory.title}</h3>
                             <p>
-                              {getWorkingPeriod(
-                                subHistory.from,
-                                subHistory.nowWorking,
-                                subHistory.to
-                              )}
+                              {subHistory.workingPeriod.toString()}
                             </p>
                             {subHistory.detail.length !== 0 && (
                               <ul>
@@ -411,11 +388,7 @@ const AboutPage = () => {
                     <li>
                       <h3>{history.title}</h3>
                       <p>
-                        {getWorkingPeriod(
-                          history.from,
-                          history.nowWorking,
-                          history.to
-                        )}
+                        {history.workingPeriod.toString()}
                       </p>
                       {renderSubHistory}
                     </li>
@@ -489,11 +462,61 @@ export const Head: HeadFC = () => (
   <Seo title="About" description="Informations about Mhousetree" />
 )
 
-type History = {
+type GraphCmsHistory = {
   title: string
   detail: string[]
   from: string
   to?: string
   nowWorking: boolean
-  subHistories?: History[]
+  subHistories?: GraphCmsHistory[]
+}
+
+class History {
+  // properties
+  title: string;
+  detail: string[];
+  workingPeriod: WorkingPeriod;
+  subHistories?: History[];
+
+  // constructor
+  constructor(graphCmsHistory: GraphCmsHistory) {
+    this.title = graphCmsHistory.title;
+    this.detail = graphCmsHistory.detail;
+    this.workingPeriod = new WorkingPeriod(
+      graphCmsHistory.nowWorking,
+      graphCmsHistory.from,
+      graphCmsHistory.to,
+    )
+    this.subHistories = graphCmsHistory.subHistories?.map(
+      (h) => new History(h)
+    );
+  }
+}
+
+class WorkingPeriod {
+  private from: string;
+  private to?: string;
+  private nowWorking: boolean;
+
+  constructor(nowWorking: boolean, from: string, to?: string) {
+    this.nowWorking = nowWorking;
+    this.from = from;
+    this.to = to;
+  }
+
+  toString(): string {
+    if (this.to) {
+      return `${this.getYearMonth(this.from)} - ${this.getYearMonth(this.to)}`
+    } else if (this.nowWorking) {
+      return `${this.getYearMonth(this.from)} - 現在`
+    } else {
+      return this.getYearMonth(this.from)
+    }
+  }
+
+  // 2022.1 のように yyyy.MM の形式の文字列を返す
+  private getYearMonth(dateString: string): string {
+    const date = new Date(dateString)
+    return `${date.getFullYear()}.${date.getMonth() + 1}`
+  }
 }
