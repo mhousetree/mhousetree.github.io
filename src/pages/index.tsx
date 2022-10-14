@@ -20,6 +20,11 @@ const GridMain = styled.main`
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  will-change: translate, scale;
+
+  h1 {
+    will-change: transform, opacity, filter;
+  }
 
   &.transition {
     animation: transition-main 1s cubic-bezier(0.5, 0, 1, 1) 0s 1 normal both;
@@ -39,6 +44,7 @@ const GridMain = styled.main`
       translate: 0 200px;
     }
   }
+
   @keyframes transition-h1 {
     0% {
       transform: scale(1);
