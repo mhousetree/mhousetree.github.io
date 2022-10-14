@@ -144,11 +144,11 @@ const WorksWrapper = styled.section`
       }
 
       &:hover {
-        a {
+        button {
           margin: 1rem 0 0 auto;
         }
       }
-      a {
+      button {
         margin: 0 0 0 auto;
         clip-path: inset(0 0 0 100%);
       }
@@ -169,13 +169,15 @@ const WorksWrapper = styled.section`
       }
     }
 
-    a {
+    button {
       display: block;
       margin: 0 auto 0 0;
       padding: 0.5rem 1.1rem 0 1rem;
       height: 0;
       width: fit-content;
       border: 1px solid ${ColorCode.ACCENT_COLOR};
+      background-color: transparent;
+      color: ${ColorCode.ACCENT_COLOR};
 
       font-family: 'Shelby', sans-serif;
       text-decoration: none;
@@ -190,7 +192,7 @@ const WorksWrapper = styled.section`
       translate: 0 -4px;
       color: ${ColorCode.ACCENT_COLOR};
 
-      a {
+      button {
         clip-path: inset(0 0 0 0);
         height: 42px;
         margin: 1rem auto 0 0;
@@ -244,7 +246,7 @@ const AboutPage = () => {
                 <p>
                   卒業研究で制作した、音声読み上げ機能を有する外国語会話集アプリケーション。
                 </p>
-                <Link to="/">Detail</Link>
+                <button type="button">Detail</button>
               </section>
             </Link>
             <Link to="/">
@@ -256,7 +258,7 @@ const AboutPage = () => {
                 <p>
                   卒業研究で制作した、音声読み上げ機能を有する外国語会話集アプリケーション。
                 </p>
-                <Link to="/">Detail</Link>
+                <button type="button">Detail</button>
               </section>
             </Link>
             <Link to="/">
@@ -268,7 +270,7 @@ const AboutPage = () => {
                 <p>
                   卒業研究で制作した、音声読み上げ機能を有する外国語会話集アプリケーション。
                 </p>
-                <Link to="/">Detail</Link>
+                <button type="button">Detail</button>
               </section>
             </Link>
           </WorksWrapper>
