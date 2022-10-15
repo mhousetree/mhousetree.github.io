@@ -217,8 +217,6 @@ const WorksWrapper = styled.section`
 `
 
 const WorksPage: React.FC<PageProps<Queries.WorksQuery>> = ({ data }) => {
-  // const data = useStaticQuery(pageQuery)
-
   const tags: Tag[] = data.allGraphCmsWorkTag.nodes.map((t) => new Tag(t))
 
   const works = data.allGraphCmsWork.nodes
