@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { graphql, HeadFC, Link, useStaticQuery } from 'gatsby'
+import { graphql, HeadFC, Link, PageProps } from 'gatsby'
 import { rgba } from 'polished'
 
 import { Seo } from '../components/seo'
@@ -216,21 +216,17 @@ const WorksWrapper = styled.section`
   }
 `
 
-const WorksPage = () => {
-  const data = useStaticQuery(pageQuery)
+const WorksPage: React.FC<PageProps<Queries.WorksQuery>> = ({ data }) => {
+  // const data = useStaticQuery(pageQuery)
 
-  const tags: Tag[] = data.allGraphCmsWorkTag.nodes.map(
-    (t: GraphCmsTag) => new Tag(t)
-  )
+  const tags: Tag[] = data.allGraphCmsWorkTag.nodes.map((t) => new Tag(t))
 
-  const works: GraphCmsWork[] = data.allGraphCmsWork.nodes
+  const works = data.allGraphCmsWork.nodes
 
   const pickUpWorks = works.filter((work) => work.pickUp)
   const otherWorks = works.filter((work) => !work.pickUp)
 
-  console.log(otherWorks)
-
-  const renderWorks = (works: GraphCmsWork[]) =>
+  const renderWorks = (works: readonly GraphCmsWork[]) =>
     works.map((work) => (
       <Link to={`/works/detail/${work.slug}`}>
         <img src={work.thumbnail.url} alt={work.shortDescription} />
@@ -317,7 +313,7 @@ export const Head: HeadFC = () => (
 )
 
 type GraphCmsTag = {
-  works: { title: string }[]
+  works: readonly { title: string }[]
   name: string
 }
 
@@ -335,9 +331,9 @@ class Tag {
 
 type GraphCmsWork = {
   title: string
-  category: 'WebSite' | 'WebApplication' | 'Design' | 'Other'
-  tags: { name: string }[]
-  shortDescription: 'string'
+  category: Queries.GraphCMS_WorkCategory
+  tags: readonly { name: string }[]
+  shortDescription: string
   pickUp: boolean
   slug: string
   thumbnail: { url: string }
