@@ -479,7 +479,7 @@ const AboutPage = () => {
                     >
                       <img
                         src={snsInfo.icon.url}
-                        alt={snsInfo.title + ' Icon'}
+                        alt={`${snsInfo.title} Icon`}
                       />
                       {snsInfo.title}
                     </a>
