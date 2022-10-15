@@ -216,7 +216,7 @@ const WorksWrapper = styled.section`
   }
 `
 
-const AboutPage = () => {
+const WorksPage = () => {
   const data = useStaticQuery(graphql`
     query {
       allGraphCmsWorkTag {
@@ -308,7 +308,7 @@ const AboutPage = () => {
   )
 }
 
-export default AboutPage
+export default WorksPage
 
 export const Head: HeadFC = () => (
   <Seo title="About" description="Informations about Mhousetree" />
