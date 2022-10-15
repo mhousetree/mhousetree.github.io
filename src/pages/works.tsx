@@ -1,9 +1,8 @@
 import * as React from 'react'
-import { HeadFC, Link } from 'gatsby'
+import { graphql, HeadFC, Link, useStaticQuery } from 'gatsby'
 import { rgba } from 'polished'
 
 import { Seo } from '../components/seo'
-import { StaticImage } from 'gatsby-plugin-image'
 import { Layout } from '../components/layout'
 import styled from 'styled-components'
 
@@ -56,7 +55,7 @@ const Navigation = styled.nav`
   }
 
   input:checked + ul {
-    max-height: 20vh;
+    max-height: 40vh;
     mask-image: linear-gradient(to bottom, #000 0%, #000 100%);
   }
 
@@ -71,6 +70,11 @@ const Navigation = styled.nav`
     max-height: 52px;
     mask-image: linear-gradient(to bottom, #000 70%, transparent 100%);
     transition: 0.3s;
+
+    span {
+      font-size: 0.8rem;
+      color: ${rgba(ColorCode.MAIN_TEXT_COLOR, 0.6)};
+    }
 
     a {
       display: block;
@@ -155,17 +159,23 @@ const WorksWrapper = styled.section`
     }
 
     p {
-      max-width: 80%;
+      font-size: 0.9rem;
+      opacity: 0.9;
+
+      &.caption {
+        opacity: 0.7;
+      }
     }
 
     > :first-child {
       width: 40%;
       aspect-ratio: 1;
-      border: 1.2vw solid ${ColorCode.MAIN_TEXT_COLOR};
+      padding: 1.2vw;
+      background-color: ${ColorCode.MAIN_TEXT_COLOR};
       box-shadow: 4px 4px 12px ${rgba(ColorCode.MAIN_TEXT_COLOR, 0.2)};
 
       @media screen and (min-width: 1200px) {
-        border-width: 14.4px;
+        padding: 14.4px;
       }
     }
 
@@ -206,73 +216,91 @@ const WorksWrapper = styled.section`
   }
 `
 
-const tags = [
-  { name: 'JavaScript' },
-  { name: 'Gatsby' },
-  { name: 'Vue.js' },
-  { name: 'Frontend' },
-  { name: 'Design' },
-  { name: 'CSS animation' },
-  { name: 'React' },
-  { name: 'FastAPI' },
-  { name: 'HTML + CSS' },
-  { name: 'Python' },
-  { name: 'Figma' },
-]
-
 const AboutPage = () => {
+  const data = useStaticQuery(graphql`
+    query {
+      allGraphCmsWorkTag {
+        nodes {
+          works {
+            title
+          }
+          name
+        }
+      }
+      allGraphCmsWork(sort: { fields: to, order: DESC }) {
+        nodes {
+          title
+          thumbnail {
+            url
+          }
+          tags {
+            name
+          }
+          category
+          shortDescription
+          pickUp
+          slug
+        }
+      }
+    }
+  `)
+
+  const tags: Tag[] = data.allGraphCmsWorkTag.nodes.map(
+    (t: GraphCmsTag) => new Tag(t)
+  )
+
+  const works: GraphCmsWork[] = data.allGraphCmsWork.nodes
+
+  const pickUpWorks = works.filter((work) => work.pickUp)
+  const otherWorks = works.filter((work) => !work.pickUp)
+
+  console.log(otherWorks)
+
+  const renderWorks = (works: GraphCmsWork[]) =>
+    works.map((work) => (
+      <Link to={`/works/detail/${work.slug}`}>
+        <img src={work.thumbnail.url} alt={work.shortDescription} />
+        <section>
+          <h2>{work.title}</h2>
+          <p className="caption">
+            {work.tags[0].name}{' '}
+            {work.tags.slice(1).map((tag) => `/ ${tag.name} `)}
+          </p>
+          <p className="caption">{categoryEnumToString[work.category]}</p>
+          <p
+            dangerouslySetInnerHTML={{
+              __html: work.shortDescription.replace(/\n/g, '<br>'),
+            }}
+          ></p>
+          <button type="button">Detail</button>
+        </section>
+      </Link>
+    ))
+
   return (
     <Layout>
       <GridMain>
         <Navigation>
           <input type="checkbox" name="tags-show" id="tags" />
           <ul>
-            {tags.map((tag) => (
-              <li key={tag.name}>
-                <Link to="/">{tag.name}</Link>
-              </li>
-            ))}
+            {tags
+              .sort((a, b) => {
+                return a.count < b.count ? 1 : -1
+              })
+              .map((tag) => (
+                <li key={tag.name}>
+                  <Link to="/">
+                    {tag.name} <span>({tag.count})</span>
+                  </Link>
+                </li>
+              ))}
           </ul>
         </Navigation>
         <MainContent>
           <h1>Works</h1>
           <WorksWrapper>
-            <Link to="/">
-              <StaticImage src="../images/profile.jpg" alt="image" />
-              <section>
-                <h2>Kaiwa</h2>
-                <p>JavaScript / Vue.js / FastAPI / Python</p>
-                <p>Web Application</p>
-                <p>
-                  卒業研究で制作した、音声読み上げ機能を有する外国語会話集アプリケーション。
-                </p>
-                <button type="button">Detail</button>
-              </section>
-            </Link>
-            <Link to="/">
-              <StaticImage src="../images/profile.jpg" alt="image" />
-              <section>
-                <h2>Kaiwa</h2>
-                <p>JavaScript / Vue.js / FastAPI / Python</p>
-                <p>Web Application</p>
-                <p>
-                  卒業研究で制作した、音声読み上げ機能を有する外国語会話集アプリケーション。
-                </p>
-                <button type="button">Detail</button>
-              </section>
-            </Link>
-            <Link to="/">
-              <StaticImage src="../images/profile.jpg" alt="image" />
-              <section>
-                <h2>Kaiwa</h2>
-                <p>JavaScript / Vue.js / FastAPI / Python</p>
-                <p>Web Application</p>
-                <p>
-                  卒業研究で制作した、音声読み上げ機能を有する外国語会話集アプリケーション。
-                </p>
-                <button type="button">Detail</button>
-              </section>
-            </Link>
+            {renderWorks(pickUpWorks)}
+            {renderWorks(otherWorks)}
           </WorksWrapper>
         </MainContent>
       </GridMain>
@@ -285,3 +313,37 @@ export default AboutPage
 export const Head: HeadFC = () => (
   <Seo title="About" description="Informations about Mhousetree" />
 )
+
+type GraphCmsTag = {
+  works: { title: string }[]
+  name: string
+}
+
+class Tag {
+  // properties
+  name: string
+  count: number
+
+  // constructor
+  constructor(graphCmsTag: GraphCmsTag) {
+    this.name = graphCmsTag.name
+    this.count = graphCmsTag.works.length
+  }
+}
+
+type GraphCmsWork = {
+  title: string
+  category: 'WebSite' | 'WebApplication' | 'Design' | 'Other'
+  tags: { name: string }[]
+  shortDescription: 'string'
+  pickUp: boolean
+  slug: string
+  thumbnail: { url: string }
+}
+
+const categoryEnumToString = {
+  WebSite: 'Website',
+  WebApplication: 'Web application',
+  Design: 'Design',
+  Other: 'Other',
+}
