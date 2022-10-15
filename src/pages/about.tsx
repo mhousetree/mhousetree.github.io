@@ -244,61 +244,7 @@ const LinksWrapper = styled.ul`
 `
 
 const AboutPage = () => {
-  const data = useStaticQuery(graphql`
-    query {
-      allGraphCmsProfile {
-        nodes {
-          hobby
-          sns {
-            url
-            title
-            icon {
-              url
-            }
-          }
-        }
-      }
-      allGraphCmsSkill(filter: { isTopLevel: { eq: true } }) {
-        nodes {
-          title
-          category
-          level
-          from
-          subSkills {
-            title
-            category
-            level
-            from
-          }
-        }
-      }
-      allGraphCmsCertification(sort: { fields: date, order: ASC }) {
-        nodes {
-          title
-          date
-        }
-      }
-      allGraphCmsHistory(
-        sort: { fields: from, order: ASC }
-        filter: { isTopLevel: { eq: true } }
-      ) {
-        nodes {
-          title
-          detail
-          from
-          to
-          nowWorking
-          subHistories {
-            title
-            detail
-            from
-            to
-            nowWorking
-          }
-        }
-      }
-    }
-  `)
+  const data = useStaticQuery(pageQuery)
 
   const { hobby: hobbies, sns: snsInfos }: GraphCmsProfile =
     data.allGraphCmsProfile.nodes[0]
@@ -501,6 +447,62 @@ const AboutPage = () => {
 }
 
 export default AboutPage
+
+export const pageQuery = graphql`
+  query About {
+    allGraphCmsProfile {
+      nodes {
+        hobby
+        sns {
+          url
+          title
+          icon {
+            url
+          }
+        }
+      }
+    }
+    allGraphCmsSkill(filter: { isTopLevel: { eq: true } }) {
+      nodes {
+        title
+        category
+        level
+        from
+        subSkills {
+          title
+          category
+          level
+          from
+        }
+      }
+    }
+    allGraphCmsCertification(sort: { fields: date, order: ASC }) {
+      nodes {
+        title
+        date
+      }
+    }
+    allGraphCmsHistory(
+      sort: { fields: from, order: ASC }
+      filter: { isTopLevel: { eq: true } }
+    ) {
+      nodes {
+        title
+        detail
+        from
+        to
+        nowWorking
+        subHistories {
+          title
+          detail
+          from
+          to
+          nowWorking
+        }
+      }
+    }
+  }
+`
 
 export const Head: HeadFC = () => (
   <Seo title="About" description="Informations about Mhousetree" />

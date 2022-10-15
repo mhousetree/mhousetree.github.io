@@ -217,33 +217,7 @@ const WorksWrapper = styled.section`
 `
 
 const WorksPage = () => {
-  const data = useStaticQuery(graphql`
-    query {
-      allGraphCmsWorkTag {
-        nodes {
-          works {
-            title
-          }
-          name
-        }
-      }
-      allGraphCmsWork(sort: { fields: to, order: DESC }) {
-        nodes {
-          title
-          thumbnail {
-            url
-          }
-          tags {
-            name
-          }
-          category
-          shortDescription
-          pickUp
-          slug
-        }
-      }
-    }
-  `)
+  const data = useStaticQuery(pageQuery)
 
   const tags: Tag[] = data.allGraphCmsWorkTag.nodes.map(
     (t: GraphCmsTag) => new Tag(t)
@@ -309,6 +283,34 @@ const WorksPage = () => {
 }
 
 export default WorksPage
+
+export const pageQuery = graphql`
+  query Works {
+    allGraphCmsWorkTag {
+      nodes {
+        works {
+          title
+        }
+        name
+      }
+    }
+    allGraphCmsWork(sort: { fields: to, order: DESC }) {
+      nodes {
+        title
+        thumbnail {
+          url
+        }
+        tags {
+          name
+        }
+        category
+        shortDescription
+        pickUp
+        slug
+      }
+    }
+  }
+`
 
 export const Head: HeadFC = () => (
   <Seo title="About" description="Informations about Mhousetree" />
