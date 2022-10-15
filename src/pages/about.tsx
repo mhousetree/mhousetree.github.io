@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { graphql, HeadFC, Link, useStaticQuery } from 'gatsby'
+import { graphql, HeadFC, Link, PageProps } from 'gatsby'
 import { rgba } from 'polished'
 import SimpleBar from 'simplebar-react'
 import 'simplebar-react/dist/simplebar.min.css'
@@ -243,24 +243,18 @@ const LinksWrapper = styled.ul`
   }
 `
 
-const AboutPage = () => {
-  const data = useStaticQuery(pageQuery)
+const AboutPage: React.FC<PageProps<Queries.AboutQuery>> = ({ data }) => {
+  const { hobby: hobbies, sns: snsInfos } = data.allGraphCmsProfile.nodes[0]
 
-  const { hobby: hobbies, sns: snsInfos }: GraphCmsProfile =
-    data.allGraphCmsProfile.nodes[0]
-
-  const skills: GraphCmsSkill[] = data.allGraphCmsSkill.nodes
+  const skills = data.allGraphCmsSkill.nodes
 
   const frontendSkills = skills.filter((skill) => skill.category === 'Frontend')
   const designSkills = skills.filter((skill) => skill.category === 'Design')
   const otherSkills = skills.filter((skill) => skill.category === 'Other')
 
-  const certifications: GraphCmsCertification[] =
-    data.allGraphCmsCertification.nodes
+  const certifications = data.allGraphCmsCertification.nodes
 
-  const histories: History[] = data.allGraphCmsHistory.nodes.map(
-    (h: GraphCmsHistory) => new History(h)
-  )
+  const histories = data.allGraphCmsHistory.nodes.map((h) => new History(h))
 
   const renderSkills = (sourceSkills: GraphCmsSkill[]) => {
     return sourceSkills.map((skill) => {
@@ -423,10 +417,12 @@ const AboutPage = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <img
-                        src={snsInfo.icon.url}
-                        alt={`${snsInfo.title} Icon`}
-                      />
+                      {snsInfo.icon && (
+                        <img
+                          src={snsInfo.icon.url}
+                          alt={`${snsInfo.title} Icon`}
+                        />
+                      )}
                       {snsInfo.title}
                     </a>
                   </li>
@@ -508,45 +504,34 @@ export const Head: HeadFC = () => (
   <Seo title="About" description="Informations about Mhousetree" />
 )
 
-type GraphCmsProfile = {
-  hobby: string[]
-  sns: GraphCmsSnsInfo[]
-}
-
-type GraphCmsSnsInfo = {
-  url: string
+type GraphCmsSubSkill = {
   title: string
-  icon: {
-    url: string
-  }
+  category: Queries.GraphCMS_SkillCategory
+  level: number
+  from: string
 }
 
 type GraphCmsSkill = {
   title: string
-  category: 'Frontend' | 'Design' | 'Other'
+  category: Queries.GraphCMS_SkillCategory
   level: number
   from: string
-  subSkills?: GraphCmsSkill[]
-}
-
-type GraphCmsCertification = {
-  title: string
-  date: string
+  subSkills: readonly GraphCmsSubSkill[]
 }
 
 type GraphCmsHistory = {
   title: string
-  detail: string[]
+  detail: readonly string[]
   from: string
-  to?: string
+  to: string | null
   nowWorking: boolean
-  subHistories?: GraphCmsHistory[]
+  subHistories?: readonly GraphCmsHistory[] | null
 }
 
 class History {
   // properties
   title: string
-  detail: string[]
+  detail: readonly string[]
   workingPeriod: WorkingPeriod
   subHistories?: History[]
 
@@ -565,10 +550,10 @@ class History {
 
 class WorkingPeriod {
   private from: string
-  private to?: string
+  private to: string | null
   private nowWorking: boolean
 
-  constructor(nowWorking: boolean, from: string, to?: string) {
+  constructor(nowWorking: boolean, from: string, to: string | null) {
     this.nowWorking = nowWorking
     this.from = from
     this.to = to
