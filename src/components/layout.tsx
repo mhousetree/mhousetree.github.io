@@ -59,13 +59,14 @@ const ResponsiveWrapper = styled.div`
 const TopPageLink = styled.div`
   position: fixed;
   height: 48px;
+  padding-right: 1rem;
   z-index: 3;
   margin: 1rem 0 0 1rem;
   top: 0;
 
   a {
-    display: flex;
-    align-items: center;
+    display: block;
+    position: relative;
     opacity: 0.5;
     text-decoration: none;
     font-family: 'Shelby', sans-serif;
@@ -73,6 +74,12 @@ const TopPageLink = styled.div`
 
     #text-wrapper {
       overflow: hidden;
+      position: absolute;
+      width: 0px;
+      left: 48px;
+      top: 0;
+      transition: 0.3s;
+
       p {
         color: ${ColorCode.LIGHT_TEXT_COLOR};
         font-size: 2rem;
@@ -80,6 +87,7 @@ const TopPageLink = styled.div`
         padding: 0.5rem;
         transition: 0.3s;
         translate: -100%;
+        width: max-content;
       }
     }
 
@@ -87,6 +95,7 @@ const TopPageLink = styled.div`
       opacity: 1;
 
       #text-wrapper {
+        width: 80px;
         p {
           translate: 0;
         }
@@ -202,10 +211,10 @@ export const Layout = ({ children }: LayoutProps) => {
       sideLinkInfo = { link: '/about', name: 'About', iconDirection: 'left' }
       break
     default:
-      sideLinkInfo = { link: '/', name: 'Top' }
+      sideLinkInfo = { link: null, name: null }
   }
 
-  const subPageLink = location.pathname !== '/' && (
+  const subPageLink = location.pathname !== '/' && sideLinkInfo.name && (
     <SubPageLink data-link-to={sideLinkInfo.link}>
       <Link to={sideLinkInfo.link}>
         <span>{sideLinkInfo.name}</span>
@@ -214,10 +223,14 @@ export const Layout = ({ children }: LayoutProps) => {
     </SubPageLink>
   )
 
+  const dataLocationPath = location.pathname.startsWith('/works')
+    ? '/works'
+    : location.pathname
+
   return (
     <SimpleBar style={{ height: '100vh' }} autoHide={true}>
       <ResponsiveWrapper
-        data-location-path={location.pathname}
+        data-location-path={dataLocationPath}
         data-is-night={isNight()}
       >
         {topPageLink}
