@@ -48,13 +48,7 @@ const Navigation = styled.nav`
     }
   }
 
-  input[type='checkbox'] {
-    z-index: 2;
-    position: absolute;
-    right: 0;
-  }
-
-  input:checked + ul {
+  div:has(:checked) + ul {
     max-height: 40vh;
     mask-image: linear-gradient(to bottom, #000 0%, #000 100%);
   }
@@ -63,7 +57,7 @@ const Navigation = styled.nav`
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
-    padding: 2px 1rem 2px 0;
+    padding: 2px 2rem 2px 0;
     gap: 0.5rem;
     list-style: none;
     align-items: flex-end;
@@ -91,6 +85,65 @@ const Navigation = styled.nav`
         translate: 0 -2px;
         box-shadow: 0 2px 12px ${rgba(ColorCode.LIGHT_TEXT_COLOR, 0.1)};
       }
+    }
+  }
+`
+
+const TagsToggleButton = styled.div`
+  z-index: 2;
+  position: absolute;
+  top: 1.3rem;
+  right: 0;
+  width: 2rem;
+  height: 2rem;
+  transition: 0.15s;
+
+  &:hover {
+    color: ${ColorCode.ACCENT_COLOR};
+  }
+
+  input[type='checkbox'] {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    text-indent: -100%;
+    white-space: nowrap;
+    overflow: hidden;
+
+    &::before {
+      font-family: 'mhousetree-icons';
+      speak: never;
+      font-style: normal;
+      font-weight: normal;
+      font-variant: normal;
+      text-transform: none;
+      line-height: 1;
+
+      /* Better Font Rendering =========== */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+
+      content: '\\e905';
+
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      font-size: 2rem;
+      text-indent: 0;
+    }
+  }
+
+  input:checked + label {
+    &::before {
+      content: '\\e906';
     }
   }
 `
@@ -249,7 +302,10 @@ const WorksPage: React.FC<PageProps<Queries.WorksQuery>> = ({ data }) => {
     <Layout>
       <GridMain>
         <Navigation>
-          <input type="checkbox" name="tags-show" id="tags" />
+          <TagsToggleButton>
+            <input type="checkbox" name="tags-show" id="tags" />
+            <label htmlFor="tags">open tag navigation</label>
+          </TagsToggleButton>
           <ul>
             {tags
               .sort((a, b) => {
