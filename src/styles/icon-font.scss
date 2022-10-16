@@ -6,6 +6,8 @@ $mic-arrow-left: '\e901';
 $mic-arrow-up: '\e902';
 $mic-arrow-down: '\e903';
 $mic-play-browser: '\e904';
+$mic-open-tags: '\e905';
+$mic-close-tags: '\e906';
 
 @font-face {
   font-family: '#{$icomoon-font-family}';
@@ -58,5 +60,15 @@ i {
 .mic-play-browser {
   &:before {
     content: $mic-play-browser;
+  }
+}
+.mic-open-tags {
+  &:before {
+    content: $mic-open-tags;
+  }
+}
+.mic-close-tags {
+  &:before {
+    content: $mic-close-tags;
   }
 }

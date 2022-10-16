@@ -37,4 +37,12 @@ i {
 
 .mic-play-browser:before {
   content: "\e904";
+}
+
+.mic-open-tags:before {
+  content: "\e905";
+}
+
+.mic-close-tags:before {
+  content: "\e906";
 }/*# sourceMappingURL=icon-font.css.map */
