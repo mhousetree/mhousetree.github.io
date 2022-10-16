@@ -165,14 +165,11 @@ const DescriptionWrapper = styled.section`
 const DetailWorkTemplate: React.FC<Props> = ({ pageContext }) => {
   const { workInfo } = pageContext
 
-  const location = useLocation()
-  const state = location.state as LocationState
-
   return (
     <Layout>
       <GridMain>
         <Header>
-          <Link to={state.from}>
+          <Link to="/works">
             <i className="mic-arrow-left"></i>
           </Link>
           <h1>{workInfo.title}</h1>
@@ -243,8 +240,4 @@ export const Head: HeadFC = (props: HeadProps) => {
 
 type Props = {
   pageContext: WorkPageContext
-}
-
-type LocationState = {
-  from: string
 }

@@ -225,14 +225,9 @@ const WorksPage: React.FC<PageProps<Queries.WorksQuery>> = ({ data }) => {
   const pickUpWorks = works.filter((work) => work.pickUp)
   const otherWorks = works.filter((work) => !work.pickUp)
 
-  const location = useLocation()
-
   const renderWorks = (works: readonly GraphCmsWork[]) =>
     works.map((work) => (
-      <Link
-        to={`/works/detail/${work.slug}`}
-        state={{ from: location.pathname }}
-      >
+      <Link to={`/works/detail/${work.slug}`}>
         <img src={work.thumbnail.url} alt={work.shortDescription} />
         <section>
           <h2>{work.title}</h2>
