@@ -154,13 +154,14 @@ const MainContent = styled.div`
   padding: 0.5rem;
 
   h1 {
-    text-align: center;
     position: absolute;
     top: 0;
     left: 2rem;
     font-family: 'Shelby', sans-serif;
     font-size: 128px;
+    line-height: 1;
     opacity: 0.1;
+    z-index: -1;
   }
 
   h3 {
@@ -173,7 +174,7 @@ const WorksWrapper = styled.section`
   flex-direction: column;
   gap: 5rem;
 
-  > a {
+  > section {
     display: block;
     width: 100%;
     display: flex;
@@ -201,11 +202,11 @@ const WorksWrapper = styled.section`
       }
 
       &:hover {
-        button {
+        .detail-link {
           margin: 1rem 0 0 auto;
         }
       }
-      button {
+      .detail-link {
         margin: 0 0 0 auto;
         clip-path: inset(0 0 0 100%);
       }
@@ -231,8 +232,18 @@ const WorksWrapper = styled.section`
         padding: 14.4px;
       }
     }
+    .category-link,
+    .tag-link {
+      color: inherit;
+      text-decoration: none;
 
-    button {
+      &:hover {
+        background-color: ${ColorCode.ACCENT_COLOR};
+        color: #fff;
+      }
+    }
+
+    .detail-link {
       display: block;
       margin: 0 auto 0 0;
       padding: 0.5rem 1.1rem 0 1rem;
@@ -255,7 +266,7 @@ const WorksWrapper = styled.section`
       translate: 0 -4px;
       color: ${ColorCode.ACCENT_COLOR};
 
-      button {
+      .detail-link {
         clip-path: inset(0 0 0 0);
         height: 42px;
         margin: 1rem auto 0 0;
@@ -279,23 +290,42 @@ const WorksPage: React.FC<PageProps<Queries.WorksQuery>> = ({ data }) => {
 
   const renderWorks = (works: readonly GraphCmsWork[]) =>
     works.map((work) => (
-      <Link to={`/works/detail/${work.slug}`}>
+      <section>
         <img src={work.thumbnail.url} alt={work.shortDescription} />
         <section>
           <h2>{work.title}</h2>
           <p className="caption">
-            {work.tags[0].name}{' '}
-            {work.tags.slice(1).map((tag) => `/ ${tag.name} `)}
+            <Link
+              className="category-link"
+              to={`/works/category/${work.category.slug}`}
+            >
+              {work.category.name}
+            </Link>
           </p>
-          <p className="caption">{work.category.name}</p>
+          <p className="caption">
+            <Link className="tag-link" to={`/works/tag/${work.tags[0].slug}`}>
+              {work.tags[0].name}
+            </Link>{' '}
+            {work.tags.slice(1).map((tag) => (
+              <>
+                {' '}
+                /{' '}
+                <Link className="tag-link" to={`/works/tag/${tag.slug}`}>
+                  {tag.name}
+                </Link>
+              </>
+            ))}
+          </p>
           <p
             dangerouslySetInnerHTML={{
               __html: work.shortDescription.replace(/\n/g, '<br>'),
             }}
           ></p>
-          <button type="button">Detail</button>
+          <Link className="detail-link" to={`/works/detail/${work.slug}`}>
+            Detail
+          </Link>
         </section>
-      </Link>
+      </section>
     ))
 
   return (
@@ -313,7 +343,7 @@ const WorksPage: React.FC<PageProps<Queries.WorksQuery>> = ({ data }) => {
               })
               .map((tag) => (
                 <li key={tag.name}>
-                  <Link to="/">
+                  <Link to={`/works/tag/${tag.slug}`}>
                     {tag.name} <span>({tag.count})</span>
                   </Link>
                 </li>
@@ -346,6 +376,7 @@ export const pageQuery = graphql`
           title
         }
         name
+        slug
       }
     }
     allGraphCmsWork(sort: { fields: to, order: DESC }) {
@@ -356,9 +387,11 @@ export const pageQuery = graphql`
         }
         tags {
           name
+          slug
         }
         category {
           name
+          slug
         }
         shortDescription
         pickUp
@@ -371,24 +404,27 @@ export const pageQuery = graphql`
 type GraphCmsTag = {
   works: readonly { title: string }[]
   name: string
+  slug: string
 }
 
 class Tag {
   // properties
   name: string
+  slug: string
   count: number
 
   // constructor
   constructor(graphCmsTag: GraphCmsTag) {
     this.name = graphCmsTag.name
+    this.slug = graphCmsTag.slug
     this.count = graphCmsTag.works.length
   }
 }
 
 type GraphCmsWork = {
   title: string
-  category: { name: string }
-  tags: readonly { name: string }[]
+  category: { name: string; slug: string }
+  tags: readonly { name: string; slug: string }[]
   shortDescription: string
   pickUp: boolean
   slug: string
