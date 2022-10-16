@@ -11,6 +11,7 @@ import styled from 'styled-components'
 
 import { ColorCode } from '../constants/colors'
 import { isNight } from '../utils/night-mode'
+import { getYearMonth } from '../utils/get-year-month'
 
 const GridMain = styled.main`
   height: 100%;
@@ -561,17 +562,11 @@ class WorkingPeriod {
 
   toString(): string {
     if (this.to) {
-      return `${this.getYearMonth(this.from)} - ${this.getYearMonth(this.to)}`
+      return `${getYearMonth(this.from)} - ${getYearMonth(this.to)}`
     } else if (this.nowWorking) {
-      return `${this.getYearMonth(this.from)} - 現在`
+      return `${getYearMonth(this.from)} - 現在`
     } else {
-      return this.getYearMonth(this.from)
+      return getYearMonth(this.from)
     }
-  }
-
-  // 2022.1 のように yyyy.MM の形式の文字列を返す
-  private getYearMonth(dateString: string): string {
-    const date = new Date(dateString)
-    return `${date.getFullYear()}.${date.getMonth() + 1}`
   }
 }
