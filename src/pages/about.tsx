@@ -11,7 +11,7 @@ import styled from 'styled-components'
 
 import { ColorCode } from '../constants/colors'
 import { isNight } from '../utils/night-mode'
-import { getYearMonth } from '../utils/get-year-month'
+import { getYearMonth } from '../utils/get-date'
 
 const GridMain = styled.main`
   height: 100%;
