@@ -21,6 +21,9 @@ export const createSchemaCustomization: GatsbyNode['createSchemaCustomization'] 
         to: Date!
         category: GraphCMS_WorkCategory!
       }
+      type GraphCMS_WorkCategory implements Node {
+        slug: String!
+      }
     `
     createTypes(typeDefs)
   }
@@ -33,9 +36,18 @@ export const createPages: GatsbyNode['createPages'] = async ({
   const { createPage } = actions
 
   const worksTemplate = path.resolve(`./src/templates/detail-work.tsx`)
+  const categoryTemplate = path.resolve(
+    `./src/templates/filter-category-works.tsx`
+  )
+  const TagTemplate = path.resolve(`./src/templates/filter-tag-works.tsx`)
 
   const result = await graphql<{
     allGraphCmsWork: Pick<Queries.Query['allGraphCmsWork'], 'nodes'>
+    allGraphCmsWorkCategory: Pick<
+      Queries.Query['allGraphCmsWorkCategory'],
+      'nodes'
+    >
+    allGraphCmsWorkTag: Pick<Queries.Query['allGraphCmsWorkTag'], 'nodes'>
   }>(
     `
       {
@@ -58,11 +70,29 @@ export const createPages: GatsbyNode['createPages'] = async ({
             }
           }
         }
+        allGraphCmsWorkCategory {
+          nodes {
+            id
+            name
+            slug
+          }
+        }
+        allGraphCmsWorkTag {
+          nodes {
+            id
+            name
+            slug
+          }
+        }
       }
     `
   )
 
-  result.data?.allGraphCmsWork.nodes.forEach((node) => {
+  const works = result.data?.allGraphCmsWork
+  const categories = result.data?.allGraphCmsWorkCategory
+  const tags = result.data?.allGraphCmsWorkTag
+
+  works?.nodes.forEach((node) => {
     createPage<WorkPageContext>({
       path: `/works/detail/${node.slug}`,
       component: worksTemplate,
@@ -71,8 +101,40 @@ export const createPages: GatsbyNode['createPages'] = async ({
       },
     })
   })
+
+  categories?.nodes.forEach((node) => {
+    createPage<CategoryPageContext>({
+      path: `/works/category/${node.slug}`,
+      component: categoryTemplate,
+      context: {
+        slug: node.slug,
+        categoryInfo: node,
+      },
+    })
+  })
+
+  tags?.nodes.forEach((node) => {
+    createPage<TagPageContext>({
+      path: `/works/tag/${node.slug}`,
+      component: TagTemplate,
+      context: {
+        slug: node.slug,
+        tagInfo: node,
+      },
+    })
+  })
 }
 
 export type WorkPageContext = {
   workInfo: Queries.GraphCMS_Work
+}
+
+export type CategoryPageContext = {
+  slug: string
+  categoryInfo: Queries.GraphCMS_WorkCategory
+}
+
+export type TagPageContext = {
+  slug: string
+  tagInfo: Queries.GraphCMS_WorkTag
 }
