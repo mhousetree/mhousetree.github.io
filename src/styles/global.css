@@ -35,6 +35,10 @@ i {
   content: "\e903";
 }
 
+.mic-play-browser:before {
+  content: "\e904";
+}
+
 :root {
   font-family: toppan-bunkyu-gothic-pr6n, sans-serif;
   font-size: 16px;

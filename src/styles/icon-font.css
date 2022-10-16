@@ -33,4 +33,8 @@ i {
 
 .mic-arrow-down:before {
   content: "\e903";
+}
+
+.mic-play-browser:before {
+  content: "\e904";
 }/*# sourceMappingURL=icon-font.css.map */
