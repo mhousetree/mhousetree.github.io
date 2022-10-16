@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { graphql, HeadFC, Link, PageProps } from 'gatsby'
+import { useLocation } from '@reach/router'
 import { rgba } from 'polished'
 
 import { Seo } from '../components/seo'
@@ -224,9 +225,14 @@ const WorksPage: React.FC<PageProps<Queries.WorksQuery>> = ({ data }) => {
   const pickUpWorks = works.filter((work) => work.pickUp)
   const otherWorks = works.filter((work) => !work.pickUp)
 
+  const location = useLocation()
+
   const renderWorks = (works: readonly GraphCmsWork[]) =>
     works.map((work) => (
-      <Link to={`/works/detail/${work.slug}`}>
+      <Link
+        to={`/works/detail/${work.slug}`}
+        state={{ from: location.pathname }}
+      >
         <img src={work.thumbnail.url} alt={work.shortDescription} />
         <section>
           <h2>{work.title}</h2>
@@ -278,6 +284,10 @@ const WorksPage: React.FC<PageProps<Queries.WorksQuery>> = ({ data }) => {
 
 export default WorksPage
 
+export const Head: HeadFC = () => (
+  <Seo title="Works" description="Works of Mhousetree" />
+)
+
 export const pageQuery = graphql`
   query Works {
     allGraphCmsWorkTag {
@@ -305,10 +315,6 @@ export const pageQuery = graphql`
     }
   }
 `
-
-export const Head: HeadFC = () => (
-  <Seo title="About" description="Informations about Mhousetree" />
-)
 
 type GraphCmsTag = {
   works: readonly { title: string }[]
