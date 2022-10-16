@@ -5,6 +5,7 @@ $mic-arrow-right: '\e900';
 $mic-arrow-left: '\e901';
 $mic-arrow-up: '\e902';
 $mic-arrow-down: '\e903';
+$mic-play-browser: '\e904';
 
 @font-face {
   font-family: '#{$icomoon-font-family}';
@@ -52,5 +53,10 @@ i {
 .mic-arrow-down {
   &:before {
     content: $mic-arrow-down;
+  }
+}
+.mic-play-browser {
+  &:before {
+    content: $mic-play-browser;
   }
 }
