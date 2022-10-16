@@ -16,6 +16,10 @@ export const createSchemaCustomization: GatsbyNode['createSchemaCustomization'] 
       type GraphCMS_Certification implements Node {
         date: Date!
       }
+      type GraphCMS_Work implements Node {
+        from: Date!
+        to: Date!
+      }
     `
     createTypes(typeDefs)
   }
@@ -38,6 +42,17 @@ export const createPages: GatsbyNode['createPages'] = async ({
           nodes {
             title
             slug
+            category
+            from
+            to
+            url
+            shortDescription
+            tags {
+              name
+            }
+            thumbnail {
+              url
+            }
           }
         }
       }
