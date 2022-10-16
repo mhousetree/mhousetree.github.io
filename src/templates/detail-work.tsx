@@ -34,9 +34,10 @@ const Header = styled.header`
   overflow: hidden;
   width: min(960px, 80%);
   border-radius: 0 0 2px 2px;
-  padding: 0.8rem 0 0.5rem;
+  padding: 1rem 0;
+  /* TODO: なぜ動く？ */
   animation: slide-appear 1s ease-out 0s 1 normal both;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(15px);
   mask-image: linear-gradient(to bottom, #000 90%, transparent 100%);
   background-color: ${rgba(ColorCode.SUB_BG_COLOR, 0.5)};
   text-align: center;
@@ -74,7 +75,10 @@ const Header = styled.header`
   }
 `
 
-const MainContent = styled.article``
+const MainContent = styled.article`
+  margin: 3rem 0;
+  padding: 0.5rem;
+`
 
 const TopInfoWrapper = styled.section`
   display: grid;
