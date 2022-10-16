@@ -1,7 +1,6 @@
 import { HeadFC, HeadProps, Link } from 'gatsby'
 import { rgba } from 'polished'
 import * as React from 'react'
-import { useLocation } from '@reach/router'
 
 import styled from 'styled-components'
 import { WorkPageContext } from '../../gatsby-node'

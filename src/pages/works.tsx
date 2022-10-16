@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { graphql, HeadFC, Link, PageProps } from 'gatsby'
-import { useLocation } from '@reach/router'
 import { rgba } from 'polished'
 
 import { Seo } from '../components/seo'
