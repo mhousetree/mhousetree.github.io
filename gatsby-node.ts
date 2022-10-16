@@ -19,6 +19,7 @@ export const createSchemaCustomization: GatsbyNode['createSchemaCustomization'] 
       type GraphCMS_Work implements Node {
         from: Date!
         to: Date!
+        category: GraphCMS_WorkCategory!
       }
     `
     createTypes(typeDefs)
@@ -42,7 +43,9 @@ export const createPages: GatsbyNode['createPages'] = async ({
           nodes {
             title
             slug
-            category
+            category {
+              name
+            }
             from
             to
             url

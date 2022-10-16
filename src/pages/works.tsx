@@ -287,7 +287,7 @@ const WorksPage: React.FC<PageProps<Queries.WorksQuery>> = ({ data }) => {
             {work.tags[0].name}{' '}
             {work.tags.slice(1).map((tag) => `/ ${tag.name} `)}
           </p>
-          <p className="caption">{categoryEnumToString[work.category]}</p>
+          <p className="caption">{work.category.name}</p>
           <p
             dangerouslySetInnerHTML={{
               __html: work.shortDescription.replace(/\n/g, '<br>'),
@@ -357,7 +357,9 @@ export const pageQuery = graphql`
         tags {
           name
         }
-        category
+        category {
+          name
+        }
         shortDescription
         pickUp
         slug
@@ -385,17 +387,10 @@ class Tag {
 
 type GraphCmsWork = {
   title: string
-  category: Queries.GraphCMS_WorkCategory
+  category: { name: string }
   tags: readonly { name: string }[]
   shortDescription: string
   pickUp: boolean
   slug: string
   thumbnail: { url: string }
-}
-
-const categoryEnumToString = {
-  WebSite: 'Website',
-  WebApplication: 'Web application',
-  Design: 'Design',
-  Other: 'Other',
 }
