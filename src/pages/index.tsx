@@ -152,16 +152,17 @@ const Navigation = styled.nav`
   }
 `
 
-const Branch01Wrapper = styled.div`
+const Branch = styled.div`
   position: absolute;
   z-index: 2;
+  width: 50vw;
+  translate: 0 -50%;
+`
+
+const Branch01Wrapper = styled(Branch)`
   top: 30vh;
   left: -22vw;
-  width: 50vw;
-
   rotate: -15deg;
-  translate: 0 -50%;
-
   filter: blur(2px);
 
   @media screen and (min-width: 1200px) {
@@ -171,6 +172,35 @@ const Branch01Wrapper = styled.div`
   @media screen and (min-width: 1440px) {
     width: 720px;
     left: calc((50vw - 480px) * -1 - 144px);
+  }
+`
+const Branch02Wrapper = styled(Branch)`
+  top: 20vh;
+  right: -20vw;
+  rotate: -15deg;
+
+  @media screen and (min-width: 1200px) {
+    right: calc((50vw - 480px) * -1 - 10vw);
+  }
+
+  @media screen and (min-width: 1440px) {
+    width: 720px;
+    right: calc((50vw - 480px) * -1 - 144px);
+  }
+`
+const Branch03Wrapper = styled(Branch)`
+  top: 70vh;
+  right: -25vw;
+  rotate: -15deg;
+  filter: blur(4px);
+
+  @media screen and (min-width: 1200px) {
+    right: calc((50vw - 480px) * -1 - 15vw);
+  }
+
+  @media screen and (min-width: 1440px) {
+    width: 720px;
+    right: calc((50vw - 480px) * -1 - 216px);
   }
 `
 
@@ -255,6 +285,20 @@ const IndexPage = () => {
             alt="Illust of branch"
           />
         </Branch01Wrapper>
+        <Branch02Wrapper>
+          <StaticImage
+            placeholder="none"
+            src="../images/branch-02.png"
+            alt="Illust of branch"
+          />
+        </Branch02Wrapper>
+        <Branch03Wrapper>
+          <StaticImage
+            placeholder="none"
+            src="../images/branch-03.png"
+            alt="Illust of branch"
+          />
+        </Branch03Wrapper>
       </GridMain>
     </Layout>
   )
