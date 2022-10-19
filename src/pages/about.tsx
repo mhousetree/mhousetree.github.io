@@ -10,7 +10,6 @@ import { Layout } from '../components/layout'
 import styled from 'styled-components'
 
 import { ColorCode } from '../constants/colors'
-import { isNight } from '../utils/night-mode'
 import { getYearMonth } from '../utils/get-date'
 
 const GridMain = styled.main`
@@ -67,7 +66,7 @@ const MainContent = styled.div`
   animation: switch-on-1 0.3s ease-in-out 0.5s 1 normal both,
     switch-on-2 0.3s ease-in-out 0.7s 1 normal both;
 
-  &[data-is-night='true'] {
+  @media (prefers-color-scheme: dark) {
     background-color: ${rgba(ColorCode.MAIN_BG_COLOR, 0.9)};
   }
 
@@ -300,7 +299,7 @@ const AboutPage: React.FC<PageProps<Queries.AboutQuery>> = ({ data }) => {
             </li>
           </ul>
         </Navigation>
-        <MainContent data-is-night={isNight()}>
+        <MainContent>
           <h1>About</h1>
           <SimpleBar style={{ height: '100%' }} autoHide={true}>
             <Level2Section>

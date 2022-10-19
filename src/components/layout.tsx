@@ -7,7 +7,6 @@ import 'simplebar-react/dist/simplebar.min.css'
 import { ColorCode } from '../constants/colors'
 import { Link } from 'gatsby'
 import { StaticImage } from 'gatsby-plugin-image'
-import { isNight } from '../utils/night-mode'
 
 const ResponsiveWrapper = styled.div`
   min-height: 100vh;
@@ -15,14 +14,15 @@ const ResponsiveWrapper = styled.div`
   grid-template-columns: 1fr min(960px, 80%) 1fr;
   align-items: center;
   background-color: ${ColorCode.MAIN_BG_COLOR};
+  overflow: hidden;
 
-  &[data-is-night='true'] {
+  @media (prefers-color-scheme: dark) {
     background-color: ${ColorCode.SUB_BG_NIGHT_COLOR};
   }
 
   &[data-location-path='/about'],
   &[data-location-path='/about/'] {
-    &[data-is-night='true'] {
+    @media (prefers-color-scheme: dark) {
       animation: about-bg-night 0.5s ease-in-out 0s 1 normal both;
     }
     animation: about-bg 0.5s ease-in-out 0s 1 normal both;
@@ -229,10 +229,7 @@ export const Layout = ({ children }: LayoutProps) => {
 
   return (
     <SimpleBar style={{ height: '100vh' }} autoHide={true}>
-      <ResponsiveWrapper
-        data-location-path={dataLocationPath}
-        data-is-night={isNight()}
-      >
+      <ResponsiveWrapper data-location-path={dataLocationPath}>
         {topPageLink}
         {subPageLink}
         {children}
