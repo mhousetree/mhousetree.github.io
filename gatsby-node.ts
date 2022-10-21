@@ -68,6 +68,12 @@ export const createPages: GatsbyNode['createPages'] = async ({
             thumbnail {
               url
             }
+            description {
+              text
+              image {
+                url
+              }
+            }
           }
         }
         allGraphCmsWorkCategory {

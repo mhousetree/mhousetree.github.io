@@ -1,4 +1,5 @@
 import { HeadFC, HeadProps, Link } from 'gatsby'
+import Markdown from 'markdown-to-jsx'
 import { rgba } from 'polished'
 import * as React from 'react'
 
@@ -85,7 +86,7 @@ const TopInfoWrapper = styled.section`
   grid-template-columns: 40% 1fr;
   align-items: center;
   gap: 48px;
-  margin-bottom: 64px;
+  margin-bottom: 5rem;
 
   img {
     width: 100%;
@@ -162,6 +163,38 @@ const DescriptionWrapper = styled.section`
     font-weight: normal;
     font-size: 1.5rem;
     text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  section {
+    display: flex;
+    gap: 2rem;
+
+    &:not(:last-of-type) {
+      margin-bottom: 3rem;
+    }
+
+    &:has(img):nth-of-type(2n) {
+      flex-direction: row-reverse;
+    }
+
+    img {
+      width: 40%;
+      aspect-ratio: 1;
+      object-fit: cover;
+    }
+  }
+
+  p:not(:last-of-type) {
+    margin-bottom: 1rem;
+  }
+
+  ul {
+    padding-left: 1.5rem;
+
+    &:not(:last-child) {
+      margin-bottom: 1rem;
+    }
   }
 `
 
@@ -220,7 +253,23 @@ const DetailWorkTemplate: React.FC<Props> = ({ pageContext }) => {
           </TopInfoWrapper>
           <DescriptionWrapper>
             <h2>Description</h2>
-            <p>説明文は準備中です。</p>
+            {workInfo.description.length !== 0 ? (
+              workInfo.description.map((description) => (
+                <section>
+                  <Markdown options={{ wrapper: 'div', forceWrapper: true }}>
+                    {description.text}
+                  </Markdown>
+                  {description.image && (
+                    <img
+                      src={description.image.url}
+                      alt={`${workInfo.title}の画像です。`}
+                    />
+                  )}
+                </section>
+              ))
+            ) : (
+              <p>説明文は準備中です。</p>
+            )}
           </DescriptionWrapper>
         </MainContent>
       </GridMain>
