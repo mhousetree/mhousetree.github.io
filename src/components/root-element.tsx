@@ -18,6 +18,7 @@ const RootElement = ({ children }: RootElementProps) => {
         `,
         }}
       />
+      <Script async src="https://platform.twitter.com/widgets.js"></Script>
       {children}
     </>
   )
