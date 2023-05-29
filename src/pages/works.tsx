@@ -227,6 +227,7 @@ const WorksWrapper = styled.section`
       padding: 1.2vw;
       background-color: ${ColorCode.MAIN_TEXT_COLOR};
       box-shadow: 4px 4px 12px ${rgba(ColorCode.MAIN_TEXT_COLOR, 0.2)};
+      object-fit: cover;
 
       @media screen and (min-width: 1200px) {
         padding: 14.4px;
