@@ -49,6 +49,7 @@ const config: GatsbyConfig = {
       resolve: 'gatsby-source-graphcms',
       options: {
         endpoint: process.env.GATSBY_HYGRAPH_ENDPOINT,
+        queryConcurrency: 1,
       },
     },
   ],
