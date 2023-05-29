@@ -52,6 +52,10 @@ const config: GatsbyConfig = {
       },
     },
   ],
+
+  flags: {
+    PARALLEL_QUERY_RUNNING: true,
+  },
 }
 
 export default config
